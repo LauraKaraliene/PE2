@@ -1,5 +1,58 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #14532d;
+  --color-secondary: #ece21e;
+  --color-accent: #2e884f;
+  --color-neutral: #111111;
+  --color-background: #ffffff;
+  --color-background-light: #f7f7f7;
+  --color-background-gray: #d6d6d6;
+
+  /* Fonts */
+  --font-sans: "Inter", sans-serif;
+  --font-heading: "Sora", sans-serif;
+}
+
+/* Fonts */
+body {
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+button {
+  font-family: var(--font-heading);
+  font-weight: bold;
+}
+
+/* Buttons */
+button {
+  @apply px-4 py-2 font-heading text-white rounded transition;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent);
+}
+.btn-primary:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-neutral);
+}
+
+.btn-secondary:hover {
+  opacity: 0.8;
+}
+
+.btn-secondary:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
