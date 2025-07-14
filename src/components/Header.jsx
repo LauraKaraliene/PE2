@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo-light.svg";
+// import MobileLogo from "../../public/favicon-logo.svg";
 import SearchIcon from "../assets/icons/search.svg";
 import HamburgerIcon from "../assets/icons/hamburger.svg";
 import CloseIcon from "../assets/icons/close.svg";
@@ -11,7 +12,15 @@ export default function Header() {
   return (
     <header className="w-full bg-white shadow-md px-4 py-3 flex justify-between items-center relative z-50">
       <Link to="/">
-        <img src={Logo} alt="Holidaze Logo" className="h-20" />
+        {/* Desktop logo - hidden on small screens */}
+        <img src={Logo} alt="Holidaze Logo" className="hidden sm:block h-20" />
+
+        {/* Mobile logo - only visible on small screens */}
+        <img
+          src="/favicon-logo.svg"
+          alt="Holidaze Logo"
+          className="block sm:hidden h-10"
+        />
       </Link>
 
       <div className="relative w-full max-w-md mx-4 hidden sm:block">
