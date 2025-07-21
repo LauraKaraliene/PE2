@@ -1,8 +1,13 @@
+import React from "react";
+import VenueCard from "../components/VenueCard";
+
 export default function Home() {
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-heading">Home page</h1>
-      <p>List of venues will be here soon</p>
+    <div className="pt-20 px-4 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <VenueCard />
+      <VenueCard />
+      <VenueCard />
+      <VenueCard />
     </div>
   );
 }
