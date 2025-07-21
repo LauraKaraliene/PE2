@@ -26,6 +26,11 @@ button {
   font-weight: bold;
 }
 
+.back {
+  color: black;
+  font-weight: 500;
+}
+
 /* Buttons */
 button {
   @apply px-4 py-2 font-heading text-white rounded transition;
