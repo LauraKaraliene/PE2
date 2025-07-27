@@ -26,10 +26,12 @@ button {
   font-weight: bold;
 }
 
-/* .back {
-  color: black;
-  font-weight: 500;
-} */
+.btn-logout {
+  @apply text-black font-medium text-left w-full hover:text-red-600;
+  padding: 0;
+  background: none;
+  font-family: var(--font-sans);
+}
 
 /* Buttons */
 button {

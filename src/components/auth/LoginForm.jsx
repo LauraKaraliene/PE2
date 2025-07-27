@@ -72,7 +72,7 @@ export default function LoginForm() {
           placeholder="Email"
           autoComplete="email"
           autoFocus
-          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500"
+          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
           {...register("email", {
             required: "Email is required",
             pattern: {
@@ -89,7 +89,7 @@ export default function LoginForm() {
           type="password"
           placeholder="Password"
           autoComplete="current-password"
-          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500"
+          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
           {...register("password", {
             required: "Password is required",
             minLength: { value: 8, message: "Minimum 8 characters" },
