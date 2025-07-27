@@ -1,77 +1,118 @@
+import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_AUTH } from "../../constants/api";
 import { Link } from "react-router-dom";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [banner, setBanner] = useState({ message: "", type: "" });
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  async function onSubmit(data) {
+    setBanner({ message: "", type: "" });
 
     try {
       const res = await fetch(`${API_AUTH}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
       });
 
-      if (!res.ok) throw new Error("Login failed");
+      if (!res.ok) throw new Error("Invalid credentials");
 
-      const data = await res.json();
-      localStorage.setItem("accessToken", data.data.accessToken);
-      localStorage.setItem("user", JSON.stringify(data.data));
-      window.location.href = "/";
+      const result = await res.json();
+      localStorage.setItem("accessToken", result.data.accessToken);
+      localStorage.setItem("user", JSON.stringify(result.data));
+
+      setBanner({ message: "Login successful!", type: "success" });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (err) {
-      setError(err.message);
+      setBanner({ message: err.message, type: "error" });
+
+      // Clear banner and form after 3 sec
+      setTimeout(() => {
+        setBanner({ message: "", type: "" });
+        reset();
+      }, 3000);
     }
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 bg-white rounded-md shadow-md p-8 mt-7"
-    >
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-
-      <input
-        type="email"
-        placeholder="Email"
-        pattern="^[a-zA-Z0-9._%+-]+@stud\\.noroff\\.no$"
-        className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500"
-        autoComplete="email"
-        autoFocus
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500"
-        autoComplete="current-password"
-        minLength="8"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-
-      <button type="submit" className="btn-primary w-full">
-        Login
-      </button>
-
-      <div className="text-start text-sm space-y-1 pt-2">
-        <p>Don’t have an account?</p>
-        <Link
-          to="/register"
-          className="text-green-800 hover:underline underline-offset-2 font-medium"
+    <>
+      {/* Slide-down banner */}
+      {banner.message && (
+        <div
+          className={`fixed top-0 left-0 right-0 text-white text-center py-3 z-50 transition-all duration-300 ${
+            banner.type === "success" ? "bg-green-700" : "bg-red-600"
+          }`}
         >
-          Register here
-        </Link>
-      </div>
-    </form>
+          {banner.message}
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 bg-white rounded-md shadow-md p-8 mt-7"
+      >
+        <input
+          type="email"
+          placeholder="Email"
+          autoComplete="email"
+          autoFocus
+          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500"
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
+              message: "Must be a stud.noroff.no email",
+            },
+          })}
+        />
+        {errors.email && (
+          <p className="text-red-600 text-sm">{errors.email.message}</p>
+        )}
+
+        <input
+          type="password"
+          placeholder="Password"
+          autoComplete="current-password"
+          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500"
+          {...register("password", {
+            required: "Password is required",
+            minLength: { value: 8, message: "Minimum 8 characters" },
+          })}
+        />
+        {errors.password && (
+          <p className="text-red-600 text-sm">{errors.password.message}</p>
+        )}
+
+        <button type="submit" className="btn-primary w-full">
+          Login
+        </button>
+
+        <div className="text-start text-sm space-y-1 pt-2">
+          <p>Don’t have an account?</p>
+          <Link
+            to="/register"
+            className="text-green-800 hover:underline underline-offset-2 font-medium"
+          >
+            Register here
+          </Link>
+        </div>
+      </form>
+    </>
   );
 }

@@ -9,12 +9,12 @@ export default function Login() {
     <AuthLayout>
       <div className="w-full px-4 absolute top-6 left-0 ">
         {/* Back Button */}
-        <button
+        <a
           onClick={() => navigate(-1)}
-          className="text-sm back hover:underline underline-offset-2 block"
+          className="text-sm font-medium hover:underline underline-offset-2 block"
         >
           ← Back
-        </button>
+        </a>
       </div>
 
       {/* Heading */}
