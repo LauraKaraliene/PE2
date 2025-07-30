@@ -11,7 +11,7 @@ export default function AppRouter() {
       {/* Main routes with MainLayout */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/venue/:id" element={<SingleVenue />} />
+        <Route path="/venues/:id" element={<SingleVenue />} />
       </Route>
 
       {/* Auth routes (no MainLayout) */}
