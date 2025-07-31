@@ -20,10 +20,12 @@ export default function BookingCard({ venue, className = "" }) {
 
   return (
     <div
-      className={`border rounded-lg p-6 shadow-md w-full max-w-sm mx-auto my-5 ${className}`}
+      className={
+        "border border-gray-300 rounded-lg p-6 shadow-lg w-full max-w-sm mx-auto"
+      }
     >
       <div className="text-xl font-semibold mb-4">
-        {price} NOK <span className="text-sm text-gray-500">per night</span>
+        {price} NOK <span className="text-sm font-normal">night</span>
       </div>
 
       <div className="space-y-3">

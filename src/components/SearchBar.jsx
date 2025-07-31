@@ -1,8 +1,10 @@
 import React from "react";
 
-export default function SearchBar() {
+export default function SearchBar({ className = "" }) {
   return (
-    <div className="relative w-full max-w-xs mx-auto mt-4 sm:mt-0 sm:mx-0">
+    <div
+      className={`relative w-full max-w-xs mx-auto mt-4 sm:mt-0 sm:mx-0 ${className}`}
+    >
       <input
         type="text"
         placeholder="Search destinations"

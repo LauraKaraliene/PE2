@@ -10,7 +10,7 @@ export default function MainLayout() {
         <Header />
         {/* Search bar for small screens only */}
         <div className="block sm:hidden px-4">
-          <SearchBar />
+          <SearchBar className="mt-4" />
         </div>
         <main className="flex-grow pt-20 px-4">
           <Outlet />

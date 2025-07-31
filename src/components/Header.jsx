@@ -34,7 +34,7 @@ export default function Header() {
       {/* Search field */}
       {/* Search bar visible only on larger screens */}
       <div className="hidden sm:flex flex-grow justify-center">
-        <SearchBar />
+        <SearchBar className="mt-0 mx-auto" />
       </div>
 
       {/* Hamburger menu icon */}
