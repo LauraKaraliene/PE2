@@ -34,6 +34,7 @@ export default function BookingCard({ venue, className = "" }) {
           <input
             type="date"
             value={checkIn}
+            min={new Date().toISOString().split("T")[0]}
             onChange={(e) => setCheckIn(e.target.value)}
             className="w-full border rounded px-2 py-1 text-sm"
           />
@@ -44,6 +45,7 @@ export default function BookingCard({ venue, className = "" }) {
           <input
             type="date"
             value={checkOut}
+            min={checkIn || new Date().toISOString().split("T")[0]}
             onChange={(e) => setCheckOut(e.target.value)}
             className="w-full border rounded px-2 py-1 text-sm"
           />
@@ -66,7 +68,7 @@ export default function BookingCard({ venue, className = "" }) {
 
         <button
           disabled={!checkIn || !checkOut || nights === 0}
-          className="w-full bg-green-600 text-white py-2 mt-5 rounded hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="btn-primary  w-full disabled:cursor-not-allowed"
         >
           Book now
         </button>
