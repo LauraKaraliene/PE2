@@ -3,9 +3,12 @@ import Logo from "../assets/logo-light.svg";
 import SearchBar from "./SearchBar";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { useSearch } from "../context/SearchContext";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { setQuery } = useSearch();
 
   // Get user from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -20,7 +23,7 @@ export default function Header() {
 
   return (
     <header className="w-full bg-white shadow-md px-4 py-3 flex justify-between items-center relative z-50">
-      <Link to="/" className="flex-shrink-0">
+      <Link to="/" className="flex-shrink-0" onClick={() => setQuery("")}>
         {/* Desktop logo - hidden on small screens */}
         <img src={Logo} alt="Holidaze Logo" className="hidden sm:block h-15" />
 
