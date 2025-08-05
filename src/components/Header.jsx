@@ -21,6 +21,8 @@ export default function Header() {
     window.location.href = "/";
   }
 
+  console.log("user.name:", user?.name);
+
   return (
     <header className="w-full bg-white shadow-md px-4 py-3 flex justify-between items-center relative z-50">
       <Link to="/" className="flex-shrink-0" onClick={() => setQuery("")}>
@@ -76,12 +78,19 @@ export default function Header() {
               Contact
             </Link>
             <Link
-              to="/profile"
+              to={`/profile/${user?.name?.toLowerCase()}`}
               className="block hover:font-bold text-[color:var(--color-accent)]"
               onClick={() => setMenuOpen(false)}
             >
               Profile
             </Link>
+            {/* <Link
+              to="/profile"
+              className="block hover:font-bold text-[color:var(--color-accent)]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Profile
+            </Link> */}
           </div>
 
           {/* ✅ Auth Section */}

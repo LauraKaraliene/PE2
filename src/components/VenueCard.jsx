@@ -6,7 +6,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 
-export default function VenueCard({ venue }) {
+export default function VenueCard({ venue, children }) {
   const { id, name, price, rating, location, media } = venue;
   const imageUrl = media?.[0]?.url || placeholder;
   const imageAlt = media?.[0]?.alt || "Venue image";
@@ -60,6 +60,12 @@ export default function VenueCard({ venue }) {
               <span>{rating?.toFixed(1) || "0.0"}</span>
             </div>
           </div>
+
+          {children && (
+            <div className="pt-2 mt-2 border-t text-xs text-gray-700">
+              {children}
+            </div>
+          )}
         </div>
       </div>
     </Link>

@@ -34,7 +34,7 @@ button {
 }
 
 /* Buttons */
-button {
+button.btn {
   @apply px-4 py-2 font-heading text-white rounded transition;
 }
 

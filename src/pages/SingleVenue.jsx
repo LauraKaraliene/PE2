@@ -36,14 +36,3 @@ export default function SingleVenue() {
     </div>
   );
 }
-
-//   return (
-//     <div className="max-w-[800px] mx-auto mb-8 px-4 py-8">
-//       <ImageSlider images={venue.media} />
-//       <div className="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-//         <VenueInfo venue={venue} className="lg:col-span-2" />
-//         <BookingCard venue={venue} className="lg:col-span-1" />
-//       </div>
-//     </div>
-//   );
-// }

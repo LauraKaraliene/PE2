@@ -1,69 +1,76 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
+import { API_PROFILES, apiRequest } from "../constants/api";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import Tabs from "../components/profile/Tabs";
-import BookingCard from "../components/profile/BookingCard";
-import VenueCard from "../components/profile/VenueCard";
+import BookingCard from "../components/profile/BookedCard";
+import CreatedVenueCard from "../components/profile/CreatedVenueCard";
 
 export default function ProfilePage() {
-  const { username } = useParams(); // assume your route is like /profile/:username
+  const { username } = useParams();
   const [profile, setProfile] = useState(null);
+  const [unauthorized, setUnauthorized] = useState(false);
+
   const [activeTab, setActiveTab] = useState("Upcoming Bookings");
+
+  const upcomingBookings = profile?.bookings?.filter(
+    (b) => new Date(b.dateFrom) >= new Date()
+  );
+  const previousBookings = profile?.bookings?.filter(
+    (b) => new Date(b.dateFrom) < new Date()
+  );
+  const createdVenues = profile?.venues || [];
 
   useEffect(() => {
     async function fetchProfile() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("accessToken");
+
+      // If user not logged in or accessing someone else's profile
+      if (
+        !token ||
+        !user ||
+        username.toLowerCase() !== user.name.toLowerCase()
+      ) {
+        setUnauthorized(true);
+        return;
+      }
+
       try {
-        const response = await fetch(
-          `https://v2.api.noroff.dev/holidaze/profiles/${username}?_bookings=true&_venues=true`
+        const result = await apiRequest(
+          `${API_PROFILES}/${user.name}?_bookings=true&_venues=true`
         );
-        const result = await response.json();
+
         setProfile(result.data);
       } catch (error) {
-        console.error("Failed to fetch profile:", error);
+        console.error("❌ Failed to fetch profile:", error);
       }
     }
 
     fetchProfile();
   }, [username]);
 
+  if (unauthorized) return <Navigate to="/unauthorized" />;
   if (!profile) return <div>Loading profile...</div>;
 
-  // Separate bookings into upcoming and previous
-  const now = new Date();
-  const upcomingBookings = profile.bookings?.filter(
-    (b) => new Date(b.dateFrom) > now
-  );
-  const previousBookings = profile.bookings?.filter(
-    (b) => new Date(b.dateFrom) <= now
-  );
-
-  const tabs = [
-    "Upcoming Bookings",
-    "Previous Bookings",
-    ...(profile.venueManager ? ["My Venues"] : []),
-  ];
-
   return (
-    <section className="max-w-5xl mx-auto px-4">
+    <section className="max-w-4xl mx-auto px-4">
       <ProfileInfo profile={profile} />
+      <Tabs
+        tabs={["Upcoming Bookings", "Previous Bookings", "My Venues"]}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
-      <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-
-      <div className="mt-6 grid gap-4">
+      <div className="mt-8 space-y-3">
         {activeTab === "Upcoming Bookings" &&
-          upcomingBookings.map((booking) => (
-            <BookingCard key={booking.id} booking={booking} />
-          ))}
+          upcomingBookings.map((b) => <BookingCard key={b.id} booking={b} />)}
 
         {activeTab === "Previous Bookings" &&
-          previousBookings.map((booking) => (
-            <BookingCard key={booking.id} booking={booking} />
-          ))}
+          previousBookings.map((b) => <BookingCard key={b.id} booking={b} />)}
 
         {activeTab === "My Venues" &&
-          profile.venues.map((venue) => (
-            <VenueCard key={venue.id} venue={venue} />
-          ))}
+          createdVenues.map((v) => <CreatedVenueCard key={v.id} venue={v} />)}
       </div>
     </section>
   );

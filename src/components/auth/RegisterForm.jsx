@@ -196,7 +196,7 @@ export default function RegisterForm() {
           </span>
         </label>
 
-        <button type="submit" className="btn-primary w-full">
+        <button type="submit" className="btn btn-primary w-full">
           Submit
         </button>
       </form>

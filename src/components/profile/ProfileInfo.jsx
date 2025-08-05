@@ -4,26 +4,28 @@ import placeholderAvatar from "../../assets/placeholder.png";
 export default function ProfileInfo({ profile }) {
   const bannerUrl = profile?.banner?.url || placeholderBanner;
   const avatarUrl = profile?.avatar?.url || placeholderAvatar;
+  const name = profile?.name || "Unknown";
+  const email = profile?.email || "Not provided";
 
   return (
-    <div className="relative mb-8">
+    <div className="relative mb-20">
       {/* Banner */}
       <img
         src={bannerUrl}
-        alt={profile.banner?.alt || "User banner"}
+        alt={profile?.banner?.alt || "User banner"}
         className="w-full h-48 object-cover rounded-lg"
       />
 
-      {/* Avatar + Info */}
+      {/* Avatar and User Info */}
       <div className="flex items-center gap-6 absolute left-6 -bottom-12 bg-white p-4 rounded-lg shadow-lg">
         <img
           src={avatarUrl}
-          alt={profile.avatar?.alt || "User avatar"}
+          alt={profile?.avatar?.alt || "User avatar"}
           className="w-24 h-24 rounded-full object-cover border-4 border-white"
         />
         <div>
-          <h1 className="text-2xl font-bold">{profile.name}</h1>
-          <p className="text-gray-600">{profile.email}</p>
+          <h1 className="text-xl font-bold">{name}</h1>
+          <p className="text-gray-600 text-sm">{email}</p>
         </div>
       </div>
     </div>

@@ -68,7 +68,7 @@ export default function BookingCard({ venue, className = "" }) {
 
         <button
           disabled={!checkIn || !checkOut || nights === 0}
-          className="btn-primary  w-full disabled:cursor-not-allowed"
+          className="btn-primary btn w-full disabled:cursor-not-allowed"
         >
           Book now
         </button>

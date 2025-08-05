@@ -99,7 +99,7 @@ export default function LoginForm() {
           <p className="text-red-600 text-sm">{errors.password.message}</p>
         )}
 
-        <button type="submit" className="btn-primary w-full">
+        <button type="submit" className="btn btn-primary w-full">
           Login
         </button>
 
