@@ -1,7 +1,12 @@
+import { useState } from "react";
 import placeholderBanner from "../../assets/placeholder.png";
 import placeholderAvatar from "../../assets/placeholder.png";
+import Modal from "../common/Modal";
+import EditProfileForm from "./EditProfileForm";
 
 export default function ProfileInfo({ profile }) {
+  const [showModal, setShowModal] = useState(false);
+
   const bannerUrl = profile?.banner?.url || placeholderBanner;
   const avatarUrl = profile?.avatar?.url || placeholderAvatar;
   const name = profile?.name || "Unknown";
@@ -26,8 +31,26 @@ export default function ProfileInfo({ profile }) {
         <div>
           <h1 className="text-xl font-bold">{name}</h1>
           <p className="text-gray-600 text-sm">{email}</p>
+
+          {/* Edit button below email */}
+          <button
+            onClick={() => setShowModal(true)}
+            className="text-blue-600 text-sm mt-2 hover:underline"
+          >
+            Edit Profile
+          </button>
         </div>
       </div>
+
+      {/* Modal for edit form */}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+        <EditProfileForm
+          profile={profile}
+          onClose={() => setShowModal(false)}
+          onUpdated={() => window.location.reload()} // optional: smarter reload later
+        />
+      </Modal>
     </div>
   );
 }
