@@ -30,28 +30,38 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
 
     // avatar
     if (data.avatarUrl && data.avatarAlt) {
-      const res = await fetch(data.avatarUrl, { method: "HEAD" });
-      if (res.ok) {
-        payload.avatar = {
-          url: data.avatarUrl,
-          alt: data.avatarAlt,
-        };
-      } else {
-        setBannerMsg({ message: "Invalid avatar URL", type: "error" });
+      try {
+        const res = await fetch(data.avatarUrl, { method: "HEAD" });
+        if (res.ok) {
+          payload.avatar = {
+            url: data.avatarUrl,
+            alt: data.avatarAlt,
+          };
+        } else {
+          setBannerMsg({ message: "Invalid avatar URL", type: "error" });
+          return;
+        }
+      } catch (error) {
+        setBannerMsg({ message: "Cannot access avatar URL", type: "error" });
         return;
       }
     }
 
     // banner
     if (data.bannerUrl && data.bannerAlt) {
-      const res = await fetch(data.bannerUrl, { method: "HEAD" });
-      if (res.ok) {
-        payload.banner = {
-          url: data.bannerUrl,
-          alt: data.bannerAlt,
-        };
-      } else {
-        setBannerMsg({ message: "Invalid banner URL", type: "error" });
+      try {
+        const res = await fetch(data.bannerUrl, { method: "HEAD" });
+        if (res.ok) {
+          payload.banner = {
+            url: data.bannerUrl,
+            alt: data.bannerAlt,
+          };
+        } else {
+          setBannerMsg({ message: "Invalid banner URL", type: "error" });
+          return;
+        }
+      } catch (error) {
+        setBannerMsg({ message: "Cannot access banner URL", type: "error" });
         return;
       }
     }
@@ -67,36 +77,19 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      const token = localStorage.getItem("accessToken");
-
-      // Debug log
-      console.log("🧪 FULL DEBUG:", {
-        token: localStorage.getItem("accessToken"),
-        endpoint: `${API_PROFILES}/${user.name}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      });
-
-      // debug
-      console.log("🚨 Final URL:", `${API_PROFILES}/${user.name}`);
-
-      const result = await fetch(`${API_PROFILES}/${user.name}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!result.ok) throw new Error("Profile update failed");
+      // apiRequest helper
+      const result = await apiRequest(
+        `/holidaze/profiles/${user.name}`,
+        "PUT",
+        payload
+      );
 
       setBannerMsg({ message: "Profile updated!", type: "success" });
-      onUpdated(); // refetch profile
+      onUpdated();
       setTimeout(onClose, 1000);
     } catch (error) {
-      setBannerMsg({ message: error.message, type: "error" });
+      console.error("Profile update error:", error);
+      setBannerMsg({ message: "Profile update failed", type: "error" });
     }
   }
 

@@ -48,7 +48,11 @@ export default function ProfileInfo({ profile }) {
         <EditProfileForm
           profile={profile}
           onClose={() => setShowModal(false)}
-          onUpdated={() => window.location.reload()} // optional: smarter reload later
+          onUpdated={() => {
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }}
         />
       </Modal>
     </div>
