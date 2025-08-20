@@ -26,6 +26,10 @@ button {
   font-weight: bold;
 }
 
+button {
+  font-weight: 500;
+}
+
 .btn-logout {
   @apply text-black font-medium text-left w-full hover:text-red-600;
   padding: 0;
