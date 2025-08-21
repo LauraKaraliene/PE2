@@ -41,8 +41,6 @@ export default function HostPanel({
   return (
     <aside
       className={`border border-gray-200 rounded-lg p-4 shadow-lg bg-white ${className}`}
-      // If you prefer your CSS var:
-      // className={`border border-[var(--color-background-gray)] rounded-lg p-4 shadow-lg bg-white ${className}`}
     >
       <h1 className="text-xl font-bold">Host panel</h1>
 

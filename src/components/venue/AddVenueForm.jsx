@@ -10,8 +10,8 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
     () => ({
       name: venue?.name || "",
       description: venue?.description || "",
-      price: venue?.price ?? "",
-      maxGuests: venue?.maxGuests ?? "",
+      price: venue?.price !== undefined ? venue.price : "",
+      maxGuests: venue?.maxGuests !== undefined ? venue.maxGuests : "",
       meta: {
         wifi: !!venue?.meta?.wifi,
         parking: !!venue?.meta?.parking,
@@ -46,15 +46,32 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
   async function onSubmit(data) {
     setBannerMsg({ message: "", type: "" });
 
-    // Require these even in edit (prevents wiping accidentally)
-    if (
-      !data.name?.trim() ||
-      !data.description?.trim() ||
-      !data.price ||
-      !data.maxGuests
-    ) {
+    // Better validation
+    const price = parseFloat(data.price);
+    const maxGuests = parseInt(data.maxGuests, 10);
+
+    // Validate required fields
+    if (!data.name?.trim()) {
+      setBannerMsg({ message: "Venue name is required", type: "error" });
+      return;
+    }
+
+    if (!data.description?.trim()) {
+      setBannerMsg({ message: "Description is required", type: "error" });
+      return;
+    }
+
+    if (isNaN(price) || price < 0) {
       setBannerMsg({
-        message: "Please fill in all required fields",
+        message: "Please enter a valid price (0 or greater)",
+        type: "error",
+      });
+      return;
+    }
+
+    if (isNaN(maxGuests) || maxGuests < 1) {
+      setBannerMsg({
+        message: "Please enter a valid number of max guests (1 or greater)",
         type: "error",
       });
       return;
@@ -63,8 +80,8 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
     const payload = {
       name: data.name.trim(),
       description: data.description.trim(),
-      price: Number(data.price),
-      maxGuests: Number(data.maxGuests),
+      price: price,
+      maxGuests: maxGuests,
       meta: {
         wifi: !!data.meta?.wifi,
         parking: !!data.meta?.parking,
@@ -73,16 +90,17 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
       },
     };
 
-    // media (optional) + quick HEAD validation
+    // media
     const entered = (data.media || []).filter((m) => m?.url?.trim());
-    if (entered.some((m) => !m.alt?.trim())) {
-      setBannerMsg({
-        message: "Please provide Alt text for each image URL",
-        type: "error",
-      });
-      return;
-    }
-    if (entered.length) {
+    if (entered.length > 0) {
+      if (entered.some((m) => !m.alt?.trim())) {
+        setBannerMsg({
+          message: "Please provide Alt text for each image URL",
+          type: "error",
+        });
+        return;
+      }
+
       try {
         const checks = await Promise.all(
           entered.map((m) =>
@@ -111,20 +129,25 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
       }
     }
 
-    // location (optional)
-    const loc = {
-      address: data.location.address?.trim() || undefined,
-      city: data.location.city?.trim() || undefined,
-      country: data.location.country?.trim() || undefined,
-    };
-    if (Object.values(loc).some((v) => v !== undefined)) payload.location = loc;
+    const loc = {};
+    if (data.location.address?.trim())
+      loc.address = data.location.address.trim();
+    if (data.location.city?.trim()) loc.city = data.location.city.trim();
+    if (data.location.country?.trim())
+      loc.country = data.location.country.trim();
+
+    if (Object.keys(loc).length > 0) {
+      payload.location = loc;
+    }
 
     try {
       const endpoint = isEdit
         ? `/holidaze/venues/${venue.id}`
         : `/holidaze/venues`;
       const method = isEdit ? "PUT" : "POST";
+
       const result = await apiRequest(endpoint, method, payload);
+
       if (!result?.data?.id) throw new Error("Unexpected response");
 
       if (isEdit) {
@@ -165,13 +188,13 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
       <input
         type="text"
         placeholder="Name*"
-        {...register("name")}
+        {...register("name", { required: "Name is required" })}
         className="w-full border border-gray-300 p-2 rounded text-sm"
       />
       <textarea
         rows={3}
         placeholder="Description*"
-        {...register("description")}
+        {...register("description", { required: "Description is required" })}
         className="w-full border border-gray-300 p-2 rounded text-sm"
       />
 
@@ -182,15 +205,22 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
         <input
           type="number"
           min="0"
+          step="0.01"
           placeholder="Price (NOK)*"
-          {...register("price")}
+          {...register("price", {
+            required: "Price is required",
+            min: { value: 0, message: "Price must be 0 or greater" },
+          })}
           className="w-full border border-gray-300 p-2 rounded text-sm"
         />
         <input
           type="number"
           min="1"
           placeholder="Max Guests*"
-          {...register("maxGuests")}
+          {...register("maxGuests", {
+            required: "Max guests is required",
+            min: { value: 1, message: "Must have at least 1 guest" },
+          })}
           className="w-full border border-gray-300 p-2 rounded text-sm"
         />
       </div>
