@@ -10,7 +10,10 @@ export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
     <>
       <div className="flex items-center mb-6">
         {canCreate && (
-          <button className="btn-primary btn" onClick={() => setOpen(true)}>
+          <button
+            className="btn-primary btn text-sm"
+            onClick={() => setOpen(true)}
+          >
             + Add venue
           </button>
         )}
