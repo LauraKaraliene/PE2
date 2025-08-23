@@ -12,6 +12,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "react": "^19.1.0",
+    "react-day-picker": "^9.9.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.61.1",
     "react-router-dom": "^7.6.3"

@@ -62,7 +62,7 @@ export default function VenueCard({ venue, children }) {
           </div>
 
           {children && (
-            <div className="pt-2 mt-2 border-t text-xs text-gray-700">
+            <div className="pt-2 mt-2 border-t border-gray-300 text-xs text-gray-700">
               {children}
             </div>
           )}

@@ -3,8 +3,9 @@ import { useParams, Navigate } from "react-router-dom";
 import { API_PROFILES, apiRequest } from "../constants/api";
 import ProfileInfo from "../components/profile/ProfileInfo";
 import Tabs from "../components/profile/Tabs";
-import BookingsTab from "../components/profile/BookingsTab";
-import MyVenuesTab from "../components/profile/MyVenuesTab";
+import PreviousBookings from "../components/profile/previousBookingsTab/PreviousBookings";
+import MyVenuesTab from "../components/profile/myVenuesTab/MyVenuesTab";
+import UpcomingBookings from "../components/profile/upcomingBookingsTab/UpcomingBookings";
 
 export default function ProfilePage() {
   const { username } = useParams();
@@ -36,11 +37,15 @@ export default function ProfilePage() {
   if (unauthorized) return <Navigate to="/unauthorized" />;
   if (!profile) return <div>Loading profile...</div>;
 
-  const now = new Date();
+  const today = new Date().setHours(0, 0, 0, 0);
   const upcoming =
-    profile.bookings?.filter((b) => new Date(b.dateFrom) >= now) || [];
+    profile.bookings?.filter(
+      (b) => new Date(b.dateTo).setHours(0, 0, 0, 0) >= today
+    ) || [];
   const previous =
-    profile.bookings?.filter((b) => new Date(b.dateFrom) < now) || [];
+    profile.bookings?.filter(
+      (b) => new Date(b.dateTo).setHours(0, 0, 0, 0) < today
+    ) || [];
   const createdVenues = profile.venues || [];
   const isManager = profile.venueManager === true;
 
@@ -54,11 +59,9 @@ export default function ProfilePage() {
       />
 
       <div className="mt-8">
-        {activeTab === "Upcoming Bookings" && (
-          <BookingsTab bookings={upcoming} />
-        )}
+        {activeTab === "Upcoming Bookings" && <UpcomingBookings />}
         {activeTab === "Previous Bookings" && (
-          <BookingsTab bookings={previous} />
+          <PreviousBookings bookings={previous} />
         )}
         {activeTab === "My Venues" && (
           <MyVenuesTab

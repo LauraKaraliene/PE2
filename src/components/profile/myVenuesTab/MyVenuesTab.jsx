@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CreatedVenueCard from "./CreatedVenueCard";
-import Modal from "../common/Modal";
-import AddVenueForm from "../venue/AddVenueForm";
+import Modal from "../../common/Modal";
+import AddVenueForm from "../../venue/AddVenueForm";
 
 export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
   const [open, setOpen] = useState(false);
