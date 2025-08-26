@@ -17,7 +17,7 @@ export default function BookedVenueCard({ booking }) {
   const totalPrice = (Number(venue.price) || 0) * n;
 
   return (
-    <VenueCard venue={venue}>
+    <VenueCard venue={venue} linkState={{ bookingId: booking.id }}>
       <div className="space-y-1 text-xs mb-2 text-gray-700">
         <div className="flex items-center gap-2 my-2">
           <CalendarDaysIcon className="w-4 h-4" />

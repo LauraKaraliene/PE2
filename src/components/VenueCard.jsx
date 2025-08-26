@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import placeholder from "../assets/placeholder.png";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 
-export default function VenueCard({ venue, children }) {
-  const { id, name, price, rating, location, media } = venue;
+export default function VenueCard({ venue, children, to, linkState }) {
+  const { id, name, price, rating, location, media } = venue || {};
   const imageUrl = media?.[0]?.url || placeholder;
   const imageAlt = media?.[0]?.alt || "Venue image";
   const city = location?.city || "Unknown city";
   const country = location?.country || "Unknown country";
   const [favorite, setFavorite] = useState(false);
 
+  // Allow overriding the destination and passing router state (e.g., { bookingId })
+  const href = to ?? `/venues/${id}`;
+
   return (
-    <Link to={`/venues/${id}`} className="block">
+    <Link to={href} state={linkState} className="block">
       <div className="w-full max-w-[250px] rounded-lg overflow-hidden shadow-md relative bg-white">
         {/* Image section */}
         <div className="relative">
@@ -25,21 +27,23 @@ export default function VenueCard({ venue, children }) {
             className="w-full h-52 object-cover"
           />
 
-          {/* Favorite icon */}
-          <div
-            onClick={() => setFavorite(!favorite)}
-            className="absolute top-2 right-2 cursor-pointer z-10"
-            role="button"
+          {/* Favorite icon (don’t navigate when toggling) */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setFavorite((v) => !v);
+            }}
+            className="absolute top-2 right-2 cursor-pointer z-10 rounded-full w-8 h-8 flex items-center justify-center"
             aria-label="Toggle favorite"
           >
-            <div className="rounded-full w-8 h-8 flex items-center justify-center">
-              {favorite ? (
-                <HeartSolid className="w-5 h-5 text-red-500" />
-              ) : (
-                <HeartOutline className="w-5 h-5 text-white" />
-              )}
-            </div>
-          </div>
+            {favorite ? (
+              <HeartSolid className="w-5 h-5 text-red-500" />
+            ) : (
+              <HeartOutline className="w-5 h-5 text-white" />
+            )}
+          </button>
         </div>
 
         {/* Text section */}
@@ -47,7 +51,10 @@ export default function VenueCard({ venue, children }) {
           <h3 className="font-semibold text-sm py-2">
             {city}, {country}
           </h3>
-          <p className="text-sm text-gray-700 truncate">{name}</p>
+
+          <p className="text-sm text-gray-700 truncate" title={name}>
+            {name}
+          </p>
 
           {/* Price and rating row */}
           <div className="flex justify-between items-center text-sm font-semibold">
@@ -57,7 +64,7 @@ export default function VenueCard({ venue, children }) {
             </span>
             <div className="flex items-center gap-1">
               <StarIcon className="w-4 h-4 text-yellow-500" />
-              <span>{rating?.toFixed(1) || "0.0"}</span>
+              <span>{rating?.toFixed?.(1) ?? "0.0"}</span>
             </div>
           </div>
 
