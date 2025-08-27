@@ -1,12 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
+import { apiRequest } from "../constants/api";
 import ImageSlider from "../components/venue/ImageSlider";
 import VenueInfo from "../components/venue/VenueInfo";
 import BookingPanel from "../components/venue/BookingPanel";
 import HostPanel from "../components/venue/HostPanel";
 import ManageBookingPanel from "../components/venue/ManageBookingPanel";
-import { apiRequest } from "../constants/api";
+import HostBadge from "../components/venue/HostBadge";
 
 export default function SingleVenue() {
   const { id } = useParams();
@@ -59,6 +60,7 @@ export default function SingleVenue() {
       <div className="mt-8 flex flex-col lg:flex-row lg:gap-8 gap-6">
         <div className="flex-1">
           <VenueInfo venue={venue} />
+          {!isOwner && <HostBadge owner={venue.owner} />}
         </div>
 
         <div className="flex-shrink-0 w-full max-w-sm">
