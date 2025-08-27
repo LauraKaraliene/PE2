@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-[var(--color-primary)] text-white text-center py-4">
+    <footer className="bg-[var(--color-primary)] text-white text-center py-4 mt-10">
       <p className="text-sm">
         <span className="inline-block mr-1">©</span> Copyright Laura Karaliene
       </p>
