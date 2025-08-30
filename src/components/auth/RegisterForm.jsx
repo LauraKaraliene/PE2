@@ -58,9 +58,7 @@ export default function RegisterForm() {
       if (!res.ok) throw new Error("Registration failed");
 
       const data = await res.json();
-      console.log("✅ Registered user:", data);
 
-      // await res.json();
       setBanner({
         message: "Account created! Redirecting...",
         type: "success",
