@@ -67,3 +67,12 @@ button.btn {
   outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
 }
+
+@keyframes coinSpin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
