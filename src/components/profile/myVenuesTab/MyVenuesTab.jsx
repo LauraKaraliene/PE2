@@ -22,7 +22,7 @@ export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
       {venues.length === 0 ? (
         <p className="text-sm text-gray-600">No venues yet...</p>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {venues.map((v) => (
             <CreatedVenueCard key={v.id} venue={v} />
           ))}

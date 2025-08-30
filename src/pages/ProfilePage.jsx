@@ -6,6 +6,7 @@ import Tabs from "../components/profile/Tabs";
 import PreviousBookings from "../components/profile/previousBookingsTab/PreviousBookings";
 import MyVenuesTab from "../components/profile/myVenuesTab/MyVenuesTab";
 import UpcomingBookings from "../components/profile/upcomingBookingsTab/UpcomingBookings";
+import FavoritesTab from "../components/profile/FavoritesTab/FavoritesTab";
 
 export default function ProfilePage() {
   const { username } = useParams();
@@ -53,7 +54,12 @@ export default function ProfilePage() {
     <section className="max-w-4xl mx-auto px-4">
       <ProfileInfo profile={profile} />
       <Tabs
-        tabs={["Upcoming Bookings", "Previous Bookings", "My Venues"]}
+        tabs={[
+          "Upcoming Bookings",
+          "Previous Bookings",
+          "My Venues",
+          "Favorites",
+        ]}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
@@ -70,6 +76,7 @@ export default function ProfilePage() {
             onRefresh={fetchProfile}
           />
         )}
+        {activeTab === "Favorites" && <FavoritesTab />}
       </div>
     </section>
   );

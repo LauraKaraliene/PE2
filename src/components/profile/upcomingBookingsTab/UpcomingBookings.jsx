@@ -1,4 +1,3 @@
-// src/components/profile/UpcomingBookings.jsx
 import { useEffect, useState } from "react";
 import { getMyBookings, deleteBooking } from "../../bookings/CreateBooking";
 import BookedVenueCard from "../BookedVenueCard";
@@ -11,9 +10,7 @@ export default function UpcomingBookings() {
     try {
       setLoading(true);
       const res = await getMyBookings();
-      // API shape: { data: [ { id, dateFrom, dateTo, guests, venue } ] }
       const all = res?.data || [];
-      // Only future or ongoing
       const now = new Date().setHours(0, 0, 0, 0);
       const upcoming = all
         .filter((b) => new Date(b.dateTo).setHours(0, 0, 0, 0) >= now)
@@ -43,7 +40,7 @@ export default function UpcomingBookings() {
     return <div className="py-6 text-sm">No upcoming bookings yet.</div>;
 
   return (
-    <div className="flex flex-wrap gap-4 mb-30">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {bookings.map((b) => (
         <BookedVenueCard
           key={b.id}

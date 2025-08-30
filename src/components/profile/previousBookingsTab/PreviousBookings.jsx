@@ -1,18 +1,3 @@
-// import BookedVenueCard from "../BookedVenueCard";
-
-// export default function BookingsTab({ bookings = [] }) {
-//   if (!bookings.length)
-//     return <p className="text-sm text-gray-600">Nothing here yet...</p>;
-//   return (
-//     <div className="space-y-3 mb-6">
-//       {bookings.map((b) => (
-//         <BookedVenueCard key={b.id} booking={b} />
-//       ))}
-//     </div>
-//   );
-// }
-
-// src/components/profile/previousBookingsTab/PreviousBookings.jsx
 import BookedVenueCard from "../BookedVenueCard";
 
 export default function PreviousBookings({ bookings = [] }) {
@@ -21,7 +6,7 @@ export default function PreviousBookings({ bookings = [] }) {
   }
 
   return (
-    <div className="space-y-3 mb-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {bookings.map((b) => (
         <BookedVenueCard key={b.id} booking={b} />
       ))}

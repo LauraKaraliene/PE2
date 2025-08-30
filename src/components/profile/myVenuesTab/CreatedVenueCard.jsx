@@ -11,8 +11,8 @@ export default function CreatedVenueCard({ venue }) {
   const country = location?.country || "Unknown country";
 
   return (
-    <Link to={`/venues/${id}`} className="block mb-30 focus:outline-none">
-      <article className="w-full max-w-[250px] rounded-lg overflow-hidden shadow-md bg-white hover:shadow-lg transition-shadow focus:ring-2 focus:ring-black/20">
+    <Link to={`/venues/${id}`} className="block focus:outline-none">
+      <article className="w-full h-full rounded-lg overflow-hidden shadow-md relative bg-white flex flex-col">
         {/* Image */}
         <div className="relative">
           <img
