@@ -35,7 +35,7 @@ export default function ProfileInfo({ profile }) {
           {/* Edit button below email */}
           <button
             onClick={() => setShowModal(true)}
-            className="text-blue-600 text-sm mt-2 hover:underline"
+            className="text-blue-600 text-sm mt-2 hover:underline underline-offset-4"
           >
             Edit Profile
           </button>
