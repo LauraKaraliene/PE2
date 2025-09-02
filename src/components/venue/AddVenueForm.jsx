@@ -5,7 +5,6 @@ import { apiRequest } from "../../constants/api";
 export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
   const [bannerMsg, setBannerMsg] = useState({ message: "", type: "" });
 
-  // derive defaults from venue (edit) or empty (create)
   const defaults = useMemo(
     () => ({
       name: venue?.name || "",
@@ -46,7 +45,6 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
   async function onSubmit(data) {
     setBannerMsg({ message: "", type: "" });
 
-    // Better validation
     const price = parseFloat(data.price);
     const maxGuests = parseInt(data.maxGuests, 10);
 
@@ -156,7 +154,7 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
       } else {
         setBannerMsg({ message: "Venue created!", type: "success" });
         onCreated?.(result.data);
-        reset(); // clear for create flow
+        reset();
       }
       setTimeout(onClose, 800);
     } catch (e) {

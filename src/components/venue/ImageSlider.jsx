@@ -4,23 +4,18 @@ export default function ImageSlider({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef(null);
   const touchEndX = useRef(null);
-
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
-
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
-
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
   };
-
   const handleTouchMove = (e) => {
     touchEndX.current = e.touches[0].clientX;
   };
-
   const handleTouchEnd = () => {
     if (!touchStartX.current || !touchEndX.current) return;
 
@@ -45,7 +40,6 @@ export default function ImageSlider({ images }) {
   return (
     <div
       className="relative w-full aspect-video overflow-hidden rounded shadow"
-      // className="relative w-full overflow-hidden rounded shadow bg-gray-200 aspect-[16/10]"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -54,7 +48,6 @@ export default function ImageSlider({ images }) {
         src={images[currentIndex].url}
         alt={images[currentIndex].alt || "Venue image"}
         className="w-full h-full object-cover transition duration-300"
-        // className="absolute inset-0 w-full h-full object-cover block transition duration-300"
       />
 
       {/* Left Arrow */}

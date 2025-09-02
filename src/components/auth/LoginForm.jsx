@@ -41,8 +41,6 @@ export default function LoginForm() {
       }, 2000);
     } catch (err) {
       setBanner({ message: err.message, type: "error" });
-
-      // Clear banner and form after 3 sec
       setTimeout(() => {
         setBanner({ message: "", type: "" });
         reset();

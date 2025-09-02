@@ -20,7 +20,7 @@ export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
       </div>
 
       {venues.length === 0 ? (
-        <p className="text-sm text-gray-600">No venues yet...</p>
+        <p className="text-sm py-6">No created venues yet...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {venues.map((v) => (

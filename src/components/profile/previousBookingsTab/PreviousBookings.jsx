@@ -2,7 +2,7 @@ import BookedVenueCard from "../BookedVenueCard";
 
 export default function PreviousBookings({ bookings = [] }) {
   if (!bookings.length) {
-    return <p className="text-sm text-gray-600">Nothing here yet...</p>;
+    return <p className="text-sm py-6">No previous bookings yet...</p>;
   }
 
   return (

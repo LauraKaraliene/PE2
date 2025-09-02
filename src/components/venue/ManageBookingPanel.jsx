@@ -1,8 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import { API_BOOKINGS, apiRequest } from "../../constants/api";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+
+const MSG_CLEAR_MS = 3000;
+const PARENT_REFRESH_DELAY_MS = 1200;
 
 export default function ManageBookingPanel({
   venue,
@@ -10,20 +13,22 @@ export default function ManageBookingPanel({
   onChanged,
   className = "",
 }) {
-  // Find booking every render
   const current =
     (venue?.bookings || []).find((b) => b.id === bookingId) || null;
 
-  // ---- All hooks FIRST (always called in the same order) ----
+  // State
   const [openEdit, setOpenEdit] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState({ type: "", text: "" });
 
-  // Edit state (date inputs)
+  // Edit state
   const [editCheckIn, setEditCheckIn] = useState("");
   const [editCheckOut, setEditCheckOut] = useState("");
 
-  // Build list of booked dates from OTHER bookings (exclude this one)
+  // timers cleanup
+  const timers = useRef([]);
+
+  // helpers
   const bookedDates = useMemo(() => {
     const list = [];
     (venue?.bookings || [])
@@ -38,7 +43,6 @@ export default function ManageBookingPanel({
     return list;
   }, [venue?.bookings, bookingId]);
 
-  // Conflict for the edit range
   const editHasConflict = useMemo(() => {
     if (!editCheckIn || !editCheckOut) return false;
     const start = new Date(editCheckIn);
@@ -50,7 +54,6 @@ export default function ManageBookingPanel({
     return false;
   }, [editCheckIn, editCheckOut, bookedDates]);
 
-  // ---- Helpers (not hooks) ----
   const toYMD = (d) => {
     const x = new Date(d);
     const y = x.getFullYear();
@@ -68,7 +71,7 @@ export default function ManageBookingPanel({
   };
   const todayYMD = new Date().toISOString().split("T")[0];
 
-  // Initialize edit fields when `current` changes
+  // Initialize edit inputs from current booking
   useEffect(() => {
     if (current) {
       setEditCheckIn(toYMD(current.dateFrom));
@@ -79,13 +82,36 @@ export default function ManageBookingPanel({
     }
   }, [current, bookingId]);
 
-  // Derived display values (safe even if current is null)
+  // Cleanup timeouts
+  useEffect(() => {
+    return () => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+    };
+  }, []);
+
+  // price/guests
   const price = Number(venue?.price ?? 0);
   const guests = current?.guests ?? 0;
   const n = current ? nights(current.dateFrom, current.dateTo) : 0;
   const total = current ? n * price : 0;
 
-  // ---- Actions ----
+  // Reusable helpers for banner messages
+  function showMessage(type, text) {
+    setMsg({ type, text });
+    const t = setTimeout(() => setMsg({ type: "", text: "" }), MSG_CLEAR_MS);
+    timers.current.push(t);
+  }
+
+  function afterSuccessRefresh() {
+    if (!onChanged) return;
+    const t = setTimeout(() => {
+      onChanged();
+    }, PARENT_REFRESH_DELAY_MS);
+    timers.current.push(t);
+  }
+
+  //  Actions
   async function saveNewDates() {
     if (!editCheckIn || !editCheckOut) return;
     if (new Date(editCheckIn) >= new Date(editCheckOut)) return;
@@ -99,11 +125,11 @@ export default function ManageBookingPanel({
         dateTo: editCheckOut,
       });
       setOpenEdit(false);
-      setMsg({ type: "success", text: "Booking updated." });
-      onChanged?.(); // re-fetch venue
+      showMessage("success", "Booking updated.");
+      afterSuccessRefresh();
     } catch (e) {
       console.error(e);
-      setMsg({ type: "error", text: "Could not update booking." });
+      showMessage("error", "Could not update booking.");
     } finally {
       setBusy(false);
     }
@@ -115,16 +141,17 @@ export default function ManageBookingPanel({
     try {
       setBusy(true);
       await apiRequest(`${API_BOOKINGS}/${bookingId}`, "DELETE");
-      setMsg({ type: "success", text: "Booking cancelled." });
-      onChanged?.(); // re-fetch venue; `current` becomes null on next render
+      showMessage("success", "Booking cancelled.");
+      afterSuccessRefresh();
     } catch (e) {
       console.error(e);
-      setMsg({ type: "error", text: "Could not cancel booking." });
+      showMessage("error", "Could not cancel booking.");
     } finally {
       setBusy(false);
     }
   }
 
+  // If booking not found
   if (!current) {
     const userRaw = localStorage.getItem("user");
     const user = userRaw ? JSON.parse(userRaw) : null;
@@ -157,6 +184,7 @@ export default function ManageBookingPanel({
 
       {msg.text && (
         <div
+          aria-live="polite"
           className={`mt-3 mb-2 text-sm rounded px-3 py-2 ${
             msg.type === "error"
               ? "bg-red-50 text-red-700"
@@ -186,7 +214,7 @@ export default function ManageBookingPanel({
         <button
           type="button"
           onClick={() => setOpenEdit(true)}
-          className="btn btn-primary text-sm"
+          className="btn btn-primary text-sm cursor-pointer"
         >
           Change dates
         </button>
@@ -194,13 +222,13 @@ export default function ManageBookingPanel({
           type="button"
           onClick={cancelBooking}
           disabled={busy}
-          className="text-red-600 border border-red-200 rounded px-3 py-2 text-sm disabled:opacity-60"
+          className="text-red-600 border border-red-200 rounded px-3 py-2 text-sm disabled:opacity-60 cursor-pointer"
         >
           {busy ? "Working…" : "Cancel booking"}
         </button>
       </div>
 
-      {/* Edit modal – simple date inputs (no calendar lib) */}
+      {/* Edit modal */}
       <Modal isOpen={openEdit} onClose={() => setOpenEdit(false)}>
         <h3 className="text-lg font-semibold mb-4">Change your dates</h3>
 
@@ -277,13 +305,14 @@ export default function ManageBookingPanel({
 
           <div className="flex justify-end gap-2 pt-2">
             <button
-              className="border rounded px-3 py-2 text-sm"
+              className="border rounded px-3 py-2 text-sm cursor-pointer"
               onClick={() => setOpenEdit(false)}
+              disabled={busy}
             >
               Close
             </button>
             <button
-              className="btn btn-primary text-sm disabled:opacity-60"
+              className="btn btn-primary text-sm disabled:opacity-60 cursor-pointer"
               onClick={saveNewDates}
               disabled={
                 busy ||
@@ -293,7 +322,7 @@ export default function ManageBookingPanel({
                 editHasConflict
               }
             >
-              Save
+              {busy ? "Saving…" : "Save"}
             </button>
           </div>
         </div>

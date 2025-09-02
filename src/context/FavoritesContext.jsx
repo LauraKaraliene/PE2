@@ -25,12 +25,10 @@ export function FavoritesProvider({ children }) {
     }
   });
 
-  // Persist on change and when user switches
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(favorites));
   }, [favorites, storageKey]);
 
-  // If user changes (login/logout), reload correct bucket
   useEffect(() => {
     try {
       const fresh = JSON.parse(localStorage.getItem(storageKey)) || [];
@@ -38,10 +36,8 @@ export function FavoritesProvider({ children }) {
     } catch {
       setFavorites([]);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
 
-  // Store a lightweight snapshot so Saved Venues can render without refetch
   function addFavorite(venue) {
     const snap = {
       id: venue.id,

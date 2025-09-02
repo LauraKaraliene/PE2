@@ -42,7 +42,7 @@ export default function Home() {
 
         const minDelay = new Promise((res) => setTimeout(res, 1000));
         const response = await apiRequest(
-          `/holidaze/venues?page=${currentPage}&limit=30`
+          `/holidaze/venues?page=${currentPage}&limit=30&sort=created&sortOrder=desc`
         );
 
         await minDelay;
@@ -64,7 +64,6 @@ export default function Home() {
     if (!query.trim()) {
       fetchVenues();
     } else {
-      // if searching, don't show page loader here; use searchLoading instead
       setLoading(false);
     }
 

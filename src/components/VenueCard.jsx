@@ -15,17 +15,27 @@ export default function VenueCard({ venue, children, to, linkState }) {
 
   const { isFavorite, toggleFavorite } = useFavorites();
   const fav = isFavorite(id);
-
   const href = to ?? `/venues/${id}`;
+  const hasRating = typeof rating === "number" && rating > 0;
 
   return (
-    <Link to={href} state={linkState} className="block">
-      <div className="w-full h-full rounded-lg overflow-hidden shadow-md relative bg-white flex flex-col">
+    <Link to={href} state={linkState} className="block group">
+      <div
+        className="
+          w-full h-full rounded-lg overflow-hidden shadow-md relative bg-white flex flex-col
+          transition-transform duration-200 ease-out transform-gpu
+          hover:-translate-y-1 hover:shadow-xl
+          focus-within:-translate-y-1 focus-within:shadow-lg
+          motion-reduce:transform-none motion-reduce:transition-none
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)] focus-visible:ring-offset-2
+        "
+      >
+        {/* Image */}
         <div className="relative">
           <img
             src={imageUrl}
             alt={imageAlt}
-            className="w-full h-52 object-cover"
+            className="w-full h-52 object-cover "
           />
           <button
             type="button"
@@ -45,24 +55,34 @@ export default function VenueCard({ venue, children, to, linkState }) {
           </button>
         </div>
 
-        <div className="p-3 space-y-1">
+        {/* Content */}
+        <div className="p-3 flex-1 flex flex-col gap-1">
           <h3 className="font-semibold text-sm py-2">
             {city}, {country}
           </h3>
 
-          <p className="text-sm text-gray-700 truncate" title={name}>
+          <p className="text-sm text-gray-700" title={name}>
             {name}
           </p>
 
-          <div className="flex justify-between items-center text-sm font-semibold">
-            <span>
+          {/* Bottom row pinned */}
+          <div className="mt-auto flex justify-between items-center text-sm font-semibold leading-none">
+            <span className="leading-none">
               {price} NOK{" "}
               <span className="text-gray-500 font-normal">/night</span>
             </span>
-            <div className="flex items-center gap-1">
-              <StarIcon className="w-4 h-4 text-yellow-500" />
-              <span>{rating?.toFixed?.(1) ?? "0.0"}</span>
-            </div>
+
+            {hasRating && (
+              <span className="inline-flex items-center gap-1 leading-none h-4">
+                <StarIcon
+                  className="w-4 h-4 text-yellow-500 shrink-0 -mt-px"
+                  aria-hidden="true"
+                />
+                <span className="leading-none">
+                  {Number(rating).toFixed(1)}
+                </span>
+              </span>
+            )}
           </div>
 
           {children && (

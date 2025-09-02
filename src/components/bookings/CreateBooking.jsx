@@ -2,7 +2,6 @@ import { apiRequest, API_BOOKINGS, API_PROFILES } from "../../constants/api";
 
 /** Create a booking */
 export async function createBooking({ dateFrom, dateTo, guests, venueId }) {
-  // API expects ISO strings
   const payload = {
     dateFrom: new Date(dateFrom).toISOString(),
     dateTo: new Date(dateTo).toISOString(),

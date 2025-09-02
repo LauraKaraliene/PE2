@@ -5,7 +5,7 @@ export default function FavoritesTab() {
   const { favorites } = useFavorites();
 
   if (!favorites.length) {
-    return <p className="text-sm text-gray-600">No saved venues yet.</p>;
+    return <p className="text-sm py-6">No saved favorites yet...</p>;
   }
 
   return (

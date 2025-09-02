@@ -27,7 +27,6 @@ export default function RegisterForm() {
       venueManager: data.venueManager || false,
     };
 
-    // 🔎 Validate avatar URL (if provided)
     if (data.avatarUrl && data.avatarAlt) {
       try {
         const res = await fetch(data.avatarUrl, { method: "HEAD" });

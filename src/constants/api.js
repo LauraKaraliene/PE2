@@ -30,7 +30,6 @@ export async function apiRequest(endpoint, method = "GET", body = null) {
     throw new Error("API error");
   }
 
-  // Handle empty responses (like DELETE requests that return 204 No Content)
   if (
     response.status === 204 ||
     response.headers.get("content-length") === "0"
@@ -38,12 +37,10 @@ export async function apiRequest(endpoint, method = "GET", body = null) {
     return null;
   }
 
-  // Check if response has content to parse
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
     return response.json();
   }
 
-  // For non-JSON responses, return null
   return null;
 }

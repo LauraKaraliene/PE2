@@ -77,7 +77,6 @@ export default function HostPanel({
               <li
                 key={b.id}
                 className="border border-gray-200 rounded p-3 text-sm shadow-sm"
-                // or: border-[var(--color-background-gray)]
               >
                 <div className="flex justify-between">
                   <span className="font-medium">
@@ -106,7 +105,7 @@ export default function HostPanel({
           onClose={() => setOpenEdit(false)}
           onUpdated={() => {
             setOpenEdit(false);
-            onChanged?.(); // re-fetch the venue to reflect edits
+            onChanged?.();
           }}
         />
       </Modal>

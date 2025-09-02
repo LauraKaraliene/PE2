@@ -10,7 +10,7 @@ export default function BookingPanel({ venue, className = "" }) {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState({ type: "", text: "" });
 
-  // Get booked dates to disable them
+  // Get booked dates
   const bookedDates = useMemo(() => {
     if (!venue?.bookings) return [];
 
@@ -155,7 +155,7 @@ export default function BookingPanel({ venue, className = "" }) {
             <div className="flex flex-wrap gap-1">
               {bookedDates
                 .sort()
-                .slice(0, 10) // Show first 10 dates to avoid overflow
+                .slice(0, 10)
                 .map((date) => {
                   const d = new Date(date);
                   const formatted = d.toLocaleDateString("en-GB", {
