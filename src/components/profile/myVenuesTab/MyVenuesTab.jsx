@@ -8,19 +8,25 @@ export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
 
   return (
     <>
-      <div className="flex items-center mb-6">
-        {canCreate && (
-          <button
-            className="btn-primary btn text-sm"
-            onClick={() => setOpen(true)}
-          >
-            + Add venue
-          </button>
+      <div className="flex flex-col items-start mb-6">
+        <button
+          className="btn btn-primary text-sm mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={() => setOpen(true)}
+          disabled={!canCreate}
+        >
+          + Add venue
+        </button>
+
+        {!canCreate && (
+          <p className="text-sm text-gray-600">
+            You must be a venue manager to add a venue. Use “Become Manager” on
+            your profile.
+          </p>
         )}
       </div>
 
       {venues.length === 0 ? (
-        <p className="text-sm py-6">No created venues yet...</p>
+        <p className="text-sm">No created venues yet...</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {venues.map((v) => (

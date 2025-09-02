@@ -97,7 +97,8 @@ export default function ProfilePage() {
 
   return (
     <section className="max-w-4xl mx-auto px-4">
-      <ProfileInfo profile={profile} />
+      {/* <ProfileInfo profile={profile} /> */}
+      <ProfileInfo profile={profile} onBecameManager={fetchProfile} />
 
       <Tabs
         tabs={[
