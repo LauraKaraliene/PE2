@@ -180,7 +180,7 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
         </div>
       )}
 
-      <p className="text-sm mt-6 text-green-900 mb-1">
+      <p className="text-sm text-green-900 mb-1">
         Please type in venue name and description:
       </p>
       <input
@@ -196,9 +196,7 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
         className="w-full border border-gray-300 p-2 rounded text-sm"
       />
 
-      <p className="text-sm mt-2 text-green-900 mb-1">
-        Set price and capacity:
-      </p>
+      <p className="text-sm  text-green-900 mb-1">Set price and capacity:</p>
       <div className="grid grid-cols-2 gap-3">
         <input
           type="number"
@@ -265,7 +263,7 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
         <button
           type="button"
           onClick={() => append({ url: "", alt: "" })}
-          className="px-3 py-2 text-sm border rounded"
+          className="text-xs"
         >
           + Add another image
         </button>
@@ -306,7 +304,7 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary mt-4 w-full">
+      <button type="submit" className="btn btn-primary w-full">
         {isEdit ? "Save Changes" : "Create Venue"}
       </button>
     </form>

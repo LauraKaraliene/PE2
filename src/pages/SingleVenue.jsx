@@ -135,7 +135,7 @@ export default function SingleVenue() {
           {!isOwner && <HostBadge owner={venue.owner} />}
         </div>
 
-        <aside className="flex-shrink-0 w-full max-w-sm">
+        <aside className="flex-shrink-0 w-full max-w-[300px]">
           {isOwner ? (
             <HostPanel
               venue={venue}
