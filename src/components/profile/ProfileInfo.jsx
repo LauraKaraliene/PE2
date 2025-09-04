@@ -100,7 +100,7 @@ export default function ProfileInfo({ profile, onBecameManager }) {
 
           {/* Edit button below email */}
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowEditModal(true)}
             className="text-[color:var(--color-accent)] text-sm mt-2 hover:underline underline-offset-4"
           >
             Edit Profile
@@ -109,7 +109,7 @@ export default function ProfileInfo({ profile, onBecameManager }) {
       </div>
 
       {/* Modal for edit form */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+      <Modal isOpen={showEditModal} onClose={() => setShowEditModal(false)}>
         <h2 className="text-xl font-heading font-semibold mb-4 text-[color:var(--color-neutral)]">
           Edit Profile
         </h2>
