@@ -42,7 +42,7 @@ export default function Home() {
 
         const minDelay = new Promise((res) => setTimeout(res, 1000));
         const response = await apiRequest(
-          `{/holidaze/venues}?page=${currentPage}&limit=30&sort=created&sortOrder=desc`
+          `/holidaze/venues?page=${currentPage}&limit=30&sort=created&sortOrder=desc`
         );
 
         await minDelay;
