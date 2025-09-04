@@ -22,20 +22,22 @@ export default function ProfileInfo({ profile }) {
       />
 
       {/* Avatar and User Info */}
-      <div className="flex items-center gap-6 absolute left-6 -bottom-12 bg-white p-4 rounded-lg shadow-lg">
+      <div className="flex items-center gap-6 absolute left-6 -bottom-12 bg-[color:var(--color-background)] p-4 rounded-lg shadow-lg">
         <img
           src={avatarUrl}
           alt={profile?.avatar?.alt || "User avatar"}
-          className="w-24 h-24 rounded-full object-cover border-4 border-white"
+          className="w-24 h-24 rounded-full object-cover border-4 border-[color:var(--color-background)]"
         />
         <div>
-          <h1 className="text-xl font-bold">{name}</h1>
-          <p className="text-gray-600 text-sm">{email}</p>
+          <h1 className="text-xl font-heading font-bold text-[color:var(--color-neutral)]">
+            {name}
+          </h1>
+          <p className="text-sm text-[color:var(--color-neutral)]">{email}</p>
 
           {/* Edit button below email */}
           <button
             onClick={() => setShowModal(true)}
-            className="text-blue-600 text-sm mt-2 hover:underline underline-offset-4"
+            className="text-[color:var(--color-accent)] text-sm mt-2 hover:underline underline-offset-4"
           >
             Edit Profile
           </button>
@@ -44,7 +46,9 @@ export default function ProfileInfo({ profile }) {
 
       {/* Modal for edit form */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+        <h2 className="text-xl font-heading font-semibold mb-4 text-[color:var(--color-neutral)]">
+          Edit Profile
+        </h2>
         <EditProfileForm
           profile={profile}
           onClose={() => setShowModal(false)}

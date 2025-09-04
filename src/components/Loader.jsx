@@ -8,7 +8,7 @@ export default function Loader({
       className={
         inline
           ? "flex items-center justify-center w-full py-16"
-          : "flex items-center justify-center h-[100vh] bg-white"
+          : "flex items-center justify-center h-[100vh] bg-[color:var(--color-background)]"
       }
     >
       <div className="container" style={{ perspective: "1000px" }}>

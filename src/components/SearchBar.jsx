@@ -14,10 +14,10 @@ export default function SearchBar({ className = "" }) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search destinations"
-        className="w-full border-0 border-b border-gray-400 focus:border-black focus:outline-none text-sm py-2 pr-10 bg-transparent"
+        className="w-full border-0 border-b border-[color:var(--color-background-gray)] focus:border-[color:var(--color-neutral)] focus:outline-none text-sm py-2 pr-10 bg-transparent"
       />
       <div className="absolute right-0 top-2.5 pointer-events-none">
-        <MagnifyingGlassIcon className="w-5 h-5 text-black" />
+        <MagnifyingGlassIcon className="w-5 h-5 text-[color:var(--color-neutral)]" />
       </div>
     </div>
   );

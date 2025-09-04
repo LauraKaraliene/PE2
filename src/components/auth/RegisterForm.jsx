@@ -80,7 +80,9 @@ export default function RegisterForm() {
       {banner.message && (
         <div
           className={`fixed top-0 left-0 right-0 text-white text-center py-3 z-50 transition-all duration-300 ${
-            banner.type === "success" ? "bg-green-700" : "bg-red-600"
+            banner.type === "success"
+              ? "bg-[color:var(--color-primary)]"
+              : "bg-red-600"
           }`}
         >
           {banner.message}
@@ -89,7 +91,7 @@ export default function RegisterForm() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-white rounded-md shadow-md p-8 mt-7"
+        className="space-y-4 bg-[color:var(--color-background)] rounded-md shadow-md p-8 mt-7"
       >
         <input
           type="text"
@@ -101,7 +103,7 @@ export default function RegisterForm() {
               message: "Only letters, numbers, and underscores allowed",
             },
           })}
-          className="input w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="input w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
         />
         {errors.name && (
           <p className="text-red-600 text-sm">{errors.name.message}</p>
@@ -117,7 +119,7 @@ export default function RegisterForm() {
               message: "Must be a stud.noroff.no email",
             },
           })}
-          className="input w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="input w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
         />
         {errors.email && (
           <p className="text-red-600 text-sm">{errors.email.message}</p>
@@ -130,7 +132,7 @@ export default function RegisterForm() {
             required: "Password is required",
             minLength: { value: 8, message: "Minimum 8 characters" },
           })}
-          className="input w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="input w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
         />
         {errors.password && (
           <p className="text-red-600 text-sm">{errors.password.message}</p>
@@ -143,7 +145,7 @@ export default function RegisterForm() {
             required: "Confirm your password",
             validate: (value) => value === password || "Passwords do not match",
           })}
-          className="input w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="input w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
         />
         {errors.confirmPassword && (
           <p className="text-red-600 text-sm">
@@ -160,7 +162,7 @@ export default function RegisterForm() {
               message: "Must be a valid URL",
             },
           })}
-          className="input w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="input w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
         />
         {errors.avatarUrl && (
           <p className="text-red-600 text-sm">{errors.avatarUrl.message}</p>
@@ -175,7 +177,7 @@ export default function RegisterForm() {
               message: "Max 120 characters",
             },
           })}
-          className="input w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="input w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
         />
         {errors.avatarAlt && (
           <p className="text-red-600 text-sm">{errors.avatarAlt.message}</p>

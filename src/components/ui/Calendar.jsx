@@ -118,22 +118,28 @@ export default function Calendar({
   return (
     <div className="relative">
       {label && (
-        <label className="block text-sm text-gray-500 mb-1">{label}</label>
+        <label className="block text-sm text-[color:var(--color-neutral)] mb-1">
+          {label}
+        </label>
       )}
 
       <button
         ref={btnRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full border border-gray-300 text-gray-700 rounded px-2 py-2 text-sm text-left focus:outline-none focus:ring focus:ring-green-500"
+        className="w-full border border-[color:var(--color-background-gray)] text-[color:var(--color-neutral)] rounded px-2 py-2 text-sm text-left focus:outline-none focus:ring focus:ring-[color:var(--color-primary)]"
       >
-        {fmt(valueISO) || <span className="text-gray-400">{placeholder}</span>}
+        {fmt(valueISO) || (
+          <span className="text-[color:var(--color-background-gray)]">
+            {placeholder}
+          </span>
+        )}
       </button>
 
       {open && (
         <div
           id="sdp-panel"
-          className={`absolute z-30 mt-2 bg-white border rounded-md shadow-lg ${sz.pad}`}
+          className={`absolute z-30 mt-2 bg-[color:var(--color-background)] border border-[color:var(--color-background-gray)] rounded-md shadow-lg ${sz.pad}`}
           style={{ width: triggerWidth }}
         >
           {/* Header */}
@@ -142,7 +148,7 @@ export default function Calendar({
           >
             <button
               type="button"
-              className="px-2 py-1 rounded hover:bg-gray-100"
+              className="px-2 py-1 rounded hover:bg-[color:var(--color-background-gray)]"
               onClick={() => setView(addMonths(view, -1))}
               aria-label="Previous month"
             >
@@ -153,7 +159,7 @@ export default function Calendar({
             </div>
             <button
               type="button"
-              className="px-2 py-1 rounded hover:bg-gray-100"
+              className="px-2 py-1 rounded hover:bg-[color:var(--color-background-gray)]"
               onClick={() => setView(addMonths(view, +1))}
               aria-label="Next month"
             >
@@ -163,7 +169,7 @@ export default function Calendar({
 
           {/* Week header */}
           <div
-            className={`grid grid-cols-7 gap-1 px-1 ${sz.week} text-gray-500`}
+            className={`grid grid-cols-7 gap-1 px-1 ${sz.week} text-[color:var(--color-neutral)]`}
           >
             {weekDays.map((w) => (
               <div key={w} className="text-center py-1">
@@ -182,20 +188,22 @@ export default function Calendar({
               const isToday = iso === todayISO;
 
               let cls = `${sz.day} rounded flex items-center justify-center select-none transition`;
-              if (outside) cls += " text-gray-300";
-              else cls += " text-gray-800";
-              if (!disabledKind && !selectedDay) cls += " hover:bg-gray-100";
+              if (outside) cls += " text-[color:var(--color-background-gray)]";
+              else cls += " text-[color:var(--color-neutral)]";
+              if (!disabledKind && !selectedDay)
+                cls += " hover:bg-[color:var(--color-background-gray)]";
               if (selectedDay)
                 cls +=
-                  " bg-[color:var(--color-accent)] text-[color:var(--color-neutral)]";
+                  " bg-[color:var(--color-accent)] text-[color:var(--color-background)]";
               if (disabledKind) {
-                cls += " cursor-not-allowed text-gray-400 bg-gray-50";
+                cls +=
+                  " cursor-not-allowed text-[color:var(--color-background-gray)] bg-[color:var(--color-background-light)]";
                 if (disabledKind === "booked")
-                  cls += " border border-dashed border-gray-300";
+                  cls +=
+                    " border border-dashed border-[color:var(--color-background-gray)]";
               }
               if (isToday && !selectedDay && !disabledKind)
-                cls +=
-                  " ring-2 ring-[color:var(--color-primary)] ring-offset-0";
+                cls += " ring-2 ring-[color:var(--color-accent)] ring-offset-0";
 
               return (
                 <button
@@ -222,7 +230,7 @@ export default function Calendar({
           <div className="flex justify-between px-2 pt-1 pb-2 text-xs">
             <button
               type="button"
-              className="text-gray-500 hover:underline"
+              className="text-[color:var(--color-neutral)] hover:underline"
               onClick={() => {
                 onChange?.("");
                 setOpen(false);
@@ -232,7 +240,7 @@ export default function Calendar({
             </button>
             <button
               type="button"
-              className="text-gray-700 hover:underline"
+              className="text-[color:var(--color-neutral)] hover:underline"
               onClick={() => {
                 const t = new Date();
                 if (!isDisabled(t)) onChange?.(dateToISO(t));

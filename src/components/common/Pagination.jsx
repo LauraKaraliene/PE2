@@ -22,14 +22,14 @@ export default function Pagination({
   }
 
   return (
-    <div className="flex justify-center items-center space-x-2  my-6">
+    <div className="flex justify-center items-center space-x-2 my-6">
       {/* Previous button */}
       <button
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="px-3 py-1 text-sm  cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1"
+        className="px-3 py-1 text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
       >
-        <ChevronLeftIcon className="w-6 h-6 hover:scale-125 transition-transform duration-200" />
+        <ChevronLeftIcon className="w-6 h-6 text-[color:var(--color-neutral)] hover:scale-110 transition-transform duration-200" />
       </button>
 
       {/* Show first page if not visible */}
@@ -37,11 +37,13 @@ export default function Pagination({
         <>
           <button
             onClick={() => onPageChange(1)}
-            className="px-3 py-1 text-sm border border-gray-300 rounded  cursor-pointer hover:scale-110 transition-transform duration-200"
+            className="px-3 py-1 text-sm border border-[color:var(--color-background-gray)] rounded cursor-pointer hover:scale-110 transition-transform duration-200"
           >
             1
           </button>
-          {startPage > 2 && <span className="px-2">...</span>}
+          {startPage > 2 && (
+            <span className="px-2 text-[color:var(--color-neutral)]">...</span>
+          )}
         </>
       )}
 
@@ -50,10 +52,10 @@ export default function Pagination({
         <button
           key={number}
           onClick={() => onPageChange(number)}
-          className={`px-3 py-1 text-sm border border-gray-300 rounded cursor-pointer ${
+          className={`px-3 py-1 text-sm border border-[color:var(--color-background-gray)] rounded cursor-pointer ${
             currentPage === number
-              ? "bg-green-700 text-white border-green-700 hover:scale-110"
-              : " hover:scale-110"
+              ? "bg-[color:var(--color-primary)] text-white border-[color:var(--color-primary)] hover:scale-110"
+              : "hover:scale-110"
           }`}
         >
           {number}
@@ -63,10 +65,12 @@ export default function Pagination({
       {/* Show last page if not visible */}
       {endPage < totalPages && (
         <>
-          {endPage < totalPages - 1 && <span className="px-2">...</span>}
+          {endPage < totalPages - 1 && (
+            <span className="px-2 text-[color:var(--color-neutral)]">...</span>
+          )}
           <button
             onClick={() => onPageChange(totalPages)}
-            className="px-3 py-1 text-sm border border-gray-300 rounded  cursor-pointer hover:scale-110 transition-transform duration-200"
+            className="px-3 py-1 text-sm border border-[color:var(--color-background-gray)] rounded cursor-pointer hover:scale-110 transition-transform duration-200"
           >
             {totalPages}
           </button>
@@ -77,9 +81,9 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 text-sm  cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-1"
+        className="px-3 py-1 text-sm cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
       >
-        <ChevronRightIcon className="w-6 h-6 hover:scale-125 transition-transform duration-200" />
+        <ChevronRightIcon className="w-6 h-6 text-[color:var(--color-neutral)] hover:scale-110 transition-transform duration-200" />
       </button>
     </div>
   );

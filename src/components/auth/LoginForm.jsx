@@ -54,7 +54,9 @@ export default function LoginForm() {
       {banner.message && (
         <div
           className={`fixed top-0 left-0 right-0 text-white text-center py-3 z-50 transition-all duration-300 ${
-            banner.type === "success" ? "bg-green-700" : "bg-red-600"
+            banner.type === "success"
+              ? "bg-[color:var(--color-primary)]"
+              : "bg-red-600"
           }`}
         >
           {banner.message}
@@ -63,14 +65,14 @@ export default function LoginForm() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-white rounded-md shadow-md p-8 mt-7"
+        className="space-y-4 bg-[color:var(--color-background)] rounded-md shadow-md p-8 mt-7"
       >
         <input
           type="email"
           placeholder="Email"
           autoComplete="email"
           autoFocus
-          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
           {...register("email", {
             required: "Email is required",
             pattern: {
@@ -87,7 +89,7 @@ export default function LoginForm() {
           type="password"
           placeholder="Password"
           autoComplete="current-password"
-          className="w-full border border-gray-300 py-2 px-3 rounded focus:outline-none focus:ring focus:ring-green-500 placeholder:text-sm"
+          className="w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
           {...register("password", {
             required: "Password is required",
             minLength: { value: 8, message: "Minimum 8 characters" },
@@ -105,7 +107,7 @@ export default function LoginForm() {
           <p>Don’t have an account?</p>
           <Link
             to="/register"
-            className="text-green-800 hover:underline underline-offset-2 font-medium"
+            className="text-[color:var(--color-primary)] hover:underline underline-offset-2 font-medium"
           >
             Register here
           </Link>

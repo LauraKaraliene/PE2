@@ -17,19 +17,15 @@ export default function ManageBookingPanel({
   const current =
     (venue?.bookings || []).find((b) => b.id === bookingId) || null;
 
-  // State
   const [openEdit, setOpenEdit] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState({ type: "", text: "" });
 
-  // Edit state
   const [editCheckIn, setEditCheckIn] = useState("");
   const [editCheckOut, setEditCheckOut] = useState("");
 
-  // timers cleanup
   const timers = useRef([]);
 
-  // Build unavailable date list
   const bookedDates = useMemo(() => {
     const list = [];
     (venue?.bookings || [])
@@ -55,7 +51,6 @@ export default function ManageBookingPanel({
     return false;
   }, [editCheckIn, editCheckOut, bookedDates]);
 
-  // helpers
   const toYMD = (d) => {
     const x = new Date(d);
     const y = x.getFullYear();
@@ -73,7 +68,6 @@ export default function ManageBookingPanel({
   };
   const todayYMD = new Date().toISOString().split("T")[0];
 
-  // Initialize edit inputs from current booking
   useEffect(() => {
     if (current) {
       setEditCheckIn(toYMD(current.dateFrom));
@@ -84,7 +78,6 @@ export default function ManageBookingPanel({
     }
   }, [current, bookingId]);
 
-  // Cleanup
   useEffect(() => {
     return () => {
       timers.current.forEach(clearTimeout);
@@ -92,13 +85,11 @@ export default function ManageBookingPanel({
     };
   }, []);
 
-  // price per guests
   const price = Number(venue?.price ?? 0);
   const guests = current?.guests ?? 0;
   const n = current ? nights(current.dateFrom, current.dateTo) : 0;
   const total = current ? n * price : 0;
 
-  // Banner helpers
   function showMessage(type, text) {
     setMsg({ type, text });
     const t = setTimeout(() => setMsg({ type: "", text: "" }), MSG_CLEAR_MS);
@@ -112,7 +103,6 @@ export default function ManageBookingPanel({
     timers.current.push(t);
   }
 
-  //  Actions
   async function saveNewDates() {
     if (!editCheckIn || !editCheckOut) return;
     if (new Date(editCheckIn) >= new Date(editCheckOut)) return;
@@ -152,7 +142,6 @@ export default function ManageBookingPanel({
     }
   }
 
-  // If booking not found
   if (!current) {
     const userRaw = localStorage.getItem("user");
     const user = userRaw ? JSON.parse(userRaw) : null;
@@ -160,14 +149,14 @@ export default function ManageBookingPanel({
 
     return (
       <aside
-        className={`border border-gray-200 rounded-lg p-4 shadow-lg bg-white ${className}`}
+        className={`border border-[color:var(--color-background-gray)] rounded-lg p-4 shadow-lg bg-[color:var(--color-background)] ${className}`}
       >
-        <p className="text-sm text-gray-600 mb-3">
+        <p className="text-sm text-[color:var(--color-background-gray)] mb-3">
           Booking not found or has been cancelled.
         </p>
         <Link
           to={profileUrl}
-          className="inline-flex items-center gap-1 text-sm text-green-700 no-underline"
+          className="inline-flex items-center gap-1 text-sm text-[color:var(--color-primary)] no-underline"
         >
           <ArrowLeftIcon className="w-4 h-4" aria-hidden="true" />
           <span>Return to your profile</span>
@@ -178,9 +167,11 @@ export default function ManageBookingPanel({
 
   return (
     <aside
-      className={`border border-gray-200 rounded-lg p-4 shadow-lg bg-white ${className}`}
+      className={`border border-[color:var(--color-background-gray)] rounded-lg p-4 shadow-lg bg-[color:var(--color-background)] ${className}`}
     >
-      <h1 className="text-xl font-bold">Your booking</h1>
+      <h1 className="text-xl font-bold text-[color:var(--color-neutral)]">
+        Your booking
+      </h1>
 
       {msg.text && (
         <div
@@ -188,7 +179,7 @@ export default function ManageBookingPanel({
           className={`mt-3 mb-2 text-sm rounded px-3 py-2 ${
             msg.type === "error"
               ? "bg-red-50 text-red-700"
-              : "bg-green-50 text-green-700"
+              : "bg-[color:var(--color-accent-light)] text-[color:var(--color-neutral)]"
           }`}
         >
           {msg.text}
@@ -197,16 +188,20 @@ export default function ManageBookingPanel({
 
       <div className="mt-3 space-y-1 text-sm">
         <div className="flex justify-between">
-          <span className="font-medium">
+          <span className="font-medium text-[color:var(--color-neutral)]">
             {formatDate(current.dateFrom)} → {formatDate(current.dateTo)}
           </span>
-          <span className="text-gray-600">
+          <span className="text-gray-400">
             {n} night{n > 1 ? "s" : ""}
           </span>
         </div>
         <div className="flex justify-between">
-          <span>Guests: {guests}</span>
-          <span className="font-medium">{total} NOK</span>
+          <span className="text-[color:var(--color-neutral)]">
+            Guests: {guests}
+          </span>
+          <span className="font-medium text-[color:var(--color-neutral)]">
+            {total} NOK
+          </span>
         </div>
       </div>
 
@@ -228,12 +223,12 @@ export default function ManageBookingPanel({
         </button>
       </div>
 
-      {/* Edit modal */}
       <Modal isOpen={openEdit} onClose={() => setOpenEdit(false)}>
         <div className="flex flex-col h-full">
-          {/* Content area */}
           <div className="flex-1">
-            <h3 className="text-lg font-semibold mb-4">Change your dates</h3>
+            <h3 className="text-lg font-semibold mb-4 text-[color:var(--color-neutral)]">
+              Change your dates
+            </h3>
 
             <div className="space-y-3">
               <Calendar
@@ -267,7 +262,6 @@ export default function ManageBookingPanel({
                 }}
               />
 
-              {/* Validation messages */}
               {editCheckIn &&
                 editCheckOut &&
                 new Date(editCheckIn) >= new Date(editCheckOut) && (
@@ -284,10 +278,9 @@ export default function ManageBookingPanel({
             </div>
           </div>
 
-          {/* Buttons fixed at bottom */}
-          <div className="flex justify-end gap-2 pt-4 mt-4 ">
+          <div className="flex justify-end gap-2 pt-4 mt-4">
             <button
-              className="border rounded px-3 py-2 text-sm cursor-pointer hover:bg-gray-50"
+              className="border rounded px-3 py-2 text-sm cursor-pointer hover:bg-[color:var(--color-background-light)]"
               onClick={() => setOpenEdit(false)}
               disabled={busy}
             >

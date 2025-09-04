@@ -18,9 +18,9 @@ export default function BookedVenueCard({ booking }) {
 
   return (
     <VenueCard venue={venue} linkState={{ bookingId: booking.id }}>
-      <div className="space-y-1 text-xs mb-2 text-gray-700">
+      <div className="space-y-1 text-xs mb-2 text-[color:var(--color-neutral)]">
         <div className="flex items-center gap-2 my-2">
-          <CalendarDaysIcon className="w-4 h-4" />
+          <CalendarDaysIcon className="w-5 h-5 text-[color:var(--color-primary)]" />
           <span>
             {new Date(dateFrom).toLocaleDateString()} →{" "}
             {new Date(dateTo).toLocaleDateString()}
@@ -28,7 +28,7 @@ export default function BookedVenueCard({ booking }) {
         </div>
 
         <div className="flex items-center gap-2 mb-2">
-          <UsersIcon className="w-4 h-4" />
+          <UsersIcon className="w-5 h-5 text-[color:var(--color-primary)]" />
           <span>Guests: {guests}</span>
         </div>
 

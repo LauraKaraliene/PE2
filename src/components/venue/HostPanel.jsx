@@ -2,6 +2,7 @@ import { useState } from "react";
 import { apiRequest } from "../../constants/api";
 import Modal from "../common/Modal";
 import AddVenueForm from "../venue/AddVenueForm";
+import { API_VENUES } from "../../constants/api";
 
 export default function HostPanel({
   venue,
@@ -29,7 +30,7 @@ export default function HostPanel({
     if (!confirm("Delete this venue? This cannot be undone.")) return;
     try {
       setDeleting(true);
-      await apiRequest(`/holidaze/venues/${venue.id}`, "DELETE");
+      await apiRequest(`${API_VENUES}/${venue.id}`, "DELETE");
       onDeleted?.();
     } catch (e) {
       console.error("Delete failed", e);
@@ -40,7 +41,7 @@ export default function HostPanel({
 
   return (
     <aside
-      className={`border border-gray-200 rounded-lg p-4 shadow-lg bg-white ${className}`}
+      className={`border border-[color:var(--color-background-gray)] rounded-lg p-4 shadow-lg bg-[color:var(--color-background)] ${className}`}
     >
       <h1 className="text-xl font-bold">Host panel</h1>
 
@@ -65,7 +66,7 @@ export default function HostPanel({
 
       <h4 className="font-bold mt-6 mb-2">Venue Bookings</h4>
       {bookings.length === 0 ? (
-        <p className="text-sm text-gray-600">No bookings yet.</p>
+        <p className="text-sm text-gray-500">No bookings yet.</p>
       ) : (
         <ul className="space-y-2">
           {bookings.map((b) => {
@@ -76,21 +77,24 @@ export default function HostPanel({
             return (
               <li
                 key={b.id}
-                className="border border-gray-200 rounded p-3 text-sm shadow-sm"
+                className="border border-[color:var(--color-background-gray)] rounded p-3 text-sm shadow-sm"
               >
-                <div className="flex justify-between">
+                <div className="flex ">
                   <span className="font-medium">
                     {formatDate(b.dateFrom)} → {formatDate(b.dateTo)}
                   </span>
+                </div>
+                <div className="flex  mt-1">
+                  <span>Guests: {b.guests}</span>
+                </div>
+                <div className="text-gray-500 mt-1">By: {customer}</div>
+
+                <div className="flex justify-between mt-1">
                   <span className="text-gray-600">
                     {n} night{n > 1 ? "s" : ""}
                   </span>
-                </div>
-                <div className="flex justify-between mt-1">
-                  <span>Guests: {b.guests}</span>
                   <span className="font-medium">{total} NOK</span>
                 </div>
-                <div className="text-gray-600 mt-1">By: {customer}</div>
               </li>
             );
           })}

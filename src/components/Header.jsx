@@ -34,7 +34,7 @@ export default function Header() {
     username ? `${profileBase}?tab=${slug}` : "/login";
 
   return (
-    <header className="w-full bg-white shadow-md px-4 py-3 flex justify-between items-center relative z-50">
+    <header className="w-full bg-[color:var(--color-background)] shadow-md px-4 py-3 flex justify-between items-center relative z-50">
       {/* Logo */}
       <Link to="/" className="flex-shrink-0" onClick={() => setQuery("")}>
         {/* Desktop logo */}
@@ -72,7 +72,7 @@ export default function Header() {
         id="site-menu"
         role="dialog"
         aria-modal="true"
-        className={`fixed top-0 right-0 h-full w-full sm:w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-64 bg-[color:var(--color-background)] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -134,13 +134,16 @@ export default function Header() {
           {/* Auth Section */}
           <div className="space-y-2 text-sm">
             {user ? (
-              <button onClick={handleLogout} className="btn-logout">
+              <button
+                onClick={handleLogout}
+                className="btn-logout font-medium text-left w-full text-[color:var(--color-neutral)] hover:text-red-600"
+              >
                 Logout
               </button>
             ) : (
               <Link
                 to="/login"
-                className="block hover:text-green-700"
+                className="block hover:text-[color:var(--color-accent)]"
                 onClick={closeMenu}
               >
                 Login or Register
