@@ -30,6 +30,7 @@ export async function deleteBooking(id) {
 /** Get current user's bookings with venue details */
 export async function getMyBookings() {
   const user = JSON.parse(localStorage.getItem("user"));
-  if (!user?.name) throw new Error("No logged-in user found.");
+  if (!user?.name)
+    throw new Error("User not logged in. Please log in to view bookings.");
   return apiRequest(`${API_PROFILES}/${user.name}/bookings?_venue=true`);
 }

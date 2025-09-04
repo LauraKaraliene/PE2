@@ -20,24 +20,23 @@ body {
 }
 
 h1,
-h2,
-button {
+h2 {
   font-family: var(--font-heading);
   font-weight: bold;
 }
 
+/* Buttons */
 button {
   font-weight: 500;
+  font-family: var(--font-heading);
 }
 
 .btn-logout {
-  @apply text-black font-medium text-left w-full hover:text-red-600;
   padding: 0;
   background: none;
   font-family: var(--font-sans);
 }
 
-/* Buttons */
 button.btn {
   @apply px-4 py-2 font-heading text-white rounded transition;
 }

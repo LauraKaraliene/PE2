@@ -31,7 +31,7 @@ export default function ImageSlider({ images }) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="w-full aspect-video bg-gray-200 flex items-center justify-center rounded">
+      <div className="w-full aspect-video bg-[color:var(--color-background-gray)] flex items-center justify-center rounded">
         <span className="text-gray-500">No images available</span>
       </div>
     );
@@ -55,11 +55,11 @@ export default function ImageSlider({ images }) {
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-[color:var(--color-background)] bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-black"
+              className="w-6 h-6 text-[color:var(--color-neutral)]"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
@@ -76,11 +76,11 @@ export default function ImageSlider({ images }) {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-[color:var(--color-background)] bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-black"
+              className="w-6 h-6 text-[color:var(--color-neutral)]"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
@@ -100,7 +100,9 @@ export default function ImageSlider({ images }) {
               <div
                 key={idx}
                 className={`w-2 h-2 rounded-full ${
-                  idx === currentIndex ? "bg-white" : "bg-gray-400"
+                  idx === currentIndex
+                    ? "bg-[color:var(--color-background)]"
+                    : "bg-[color:var(--color-background-gray)] "
                 }`}
               />
             ))}

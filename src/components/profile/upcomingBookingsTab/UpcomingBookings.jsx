@@ -35,7 +35,6 @@ export default function UpcomingBookings() {
     }
   }
 
-  if (loading) return <div className="py-6 text-sm">Loading bookings…</div>;
   if (!bookings.length)
     return <div className="py-6 text-sm">No upcoming bookings yet...</div>;
 

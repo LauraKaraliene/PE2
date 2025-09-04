@@ -77,7 +77,6 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      // apiRequest helper
       const result = await apiRequest(
         `/holidaze/profiles/${user.name}`,
         "PUT",
@@ -99,42 +98,42 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
         <div
           className={`text-center py-2 text-sm rounded ${
             bannerMsg.type === "success"
-              ? "bg-green-500 text-white"
+              ? "bg-[color:var(--color-accent)] text-white"
               : "bg-red-500 text-white"
           }`}
         >
           {bannerMsg.message}
         </div>
       )}
-      <p className="text-sm mt-6 text-green-900 mb-1">
+      <p className="text-sm mt-6 text-[color:var(--color-primary)] mb-1">
         Please type in your Avatar URL and Alt text:
       </p>
       <input
         type="url"
         placeholder="Avatar URL"
         {...register("avatarUrl")}
-        className="w-full border border-gray-300 p-2 rounded text-sm"
+        className="w-full border border-[color:var(--color-background-gray)] p-2 rounded text-sm"
       />
       <input
         type="text"
         placeholder="Avatar Alt Text"
         {...register("avatarAlt")}
-        className="w-full border border-gray-300 text-sm p-2 rounded"
+        className="w-full border border-[color:var(--color-background-gray)] text-sm p-2 rounded"
       />
-      <p className="text-sm mt-4 text-green-900 mb-1">
+      <p className="text-sm mt-4 text-[color:var(--color-primary)] mb-1">
         Please type in your Banner URL and Alt text:
       </p>
       <input
         type="url"
         placeholder="Banner URL"
         {...register("bannerUrl")}
-        className="w-full border border-gray-300 p-2 rounded text-sm"
+        className="w-full border border-[color:var(--color-background-gray)] p-2 rounded text-sm"
       />
       <input
         type="text"
         placeholder="Banner Alt"
         {...register("bannerAlt")}
-        className="w-full border border-gray-300 p-2 rounded text-sm"
+        className="w-full border border-[color:var(--color-background-gray)] p-2 rounded text-sm"
       />
 
       <button type="submit" className="btn btn-primary mt-4 w-full">

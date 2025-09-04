@@ -7,7 +7,9 @@ export default function HostBadge({ owner, className = "" }) {
   const name = owner?.name || "Host";
 
   return (
-    <div className={`my-8  flex items-center gap-3 bg-white ${className}`}>
+    <div
+      className={`my-8  flex items-center gap-3 bg-[color:var(--color-background)] ${className}`}
+    >
       <img
         src={avatarUrl}
         alt={`${name}'s avatar`}
@@ -15,8 +17,12 @@ export default function HostBadge({ owner, className = "" }) {
         loading="lazy"
       />
       <div>
-        <p className="text-xs text-gray-500 leading-none">Hosted by</p>
-        <p className="text-sm font-medium">{name}</p>
+        <p className="text-xs text-[color:var(--color-neutral)] leading-none">
+          Hosted by
+        </p>
+        <p className="text-sm text-[color:var(--color-primary)] font-medium">
+          {name}
+        </p>
       </div>
     </div>
   );
