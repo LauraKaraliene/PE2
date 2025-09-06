@@ -13,7 +13,7 @@ export default function Tabs({ tabs, activeTab, setActiveTab }) {
             aria-selected={isActive}
             onClick={() => setActiveTab(tab)}
             className={`w-full sm:w-auto text-left sm:text-start
-                        py-1 sm:py-2 px-0 sm:px-4 text-lg transition
+                        py-1 sm:py-2 px-0 sm:px-4 text-lg sm:text-base transition
                         ${idx === 0 ? "sm:pl-0" : ""}
                         ${
                           isActive

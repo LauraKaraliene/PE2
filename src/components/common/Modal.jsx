@@ -7,15 +7,20 @@ export default function Modal({ isOpen, onClose, children, size = "auto" }) {
   return (
     <div className="fixed inset-0 backdrop-blur-xl flex justify-center items-center z-50">
       <div
-        className={`bg-white rounded-lg shadow-lg max-w-lg w-full relative mx-4 flex flex-col ${modalClasses}`}
+        className={`bg-white rounded-lg shadow-lg max-w-lg w-full relative flex flex-col ${modalClasses}`}
       >
-        <button
-          className="absolute top-2 right-5 text-xl font-bold text-black hover:scale-130 transition-transform duration-200 z-10"
-          onClick={onClose}
-        >
-          &times;
-        </button>
-        <div className="flex-1 overflow-y-auto p-6">{children}</div>
+        {/* Close Button */}
+        <div className="flex justify-end p-2 relative z-10">
+          <button
+            className="text-2xl font-bold text-black hover:scale-130 transition-transform duration-200"
+            onClick={onClose}
+          >
+            &times;
+          </button>
+        </div>
+
+        {/* Scrollable content area */}
+        <div className="flex-1 overflow-y-auto px-6 pb-6 -mt-2">{children}</div>
       </div>
     </div>
   );
