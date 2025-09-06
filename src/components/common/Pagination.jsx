@@ -52,10 +52,10 @@ export default function Pagination({
         <button
           onClick={() => go(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-2.5 sm:px-3 py-1 text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+          className="px-2.5 sm:px-3 py-1 text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           aria-label="Previous page"
         >
-          <ChevronLeftIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[color:var(--color-neutral)]" />
+          <ChevronLeftIcon className="w-6 h-6  text-[color:var(--color-neutral)]" />
         </button>
 
         {startPage > 1 && (
@@ -100,7 +100,7 @@ export default function Pagination({
           className="px-2.5 sm:px-3 py-1 text-xs sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           aria-label="Next page"
         >
-          <ChevronRightIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[color:var(--color-neutral)]" />
+          <ChevronRightIcon className="w-6 h-6  text-[color:var(--color-neutral)]" />
         </button>
       </div>
     </nav>
