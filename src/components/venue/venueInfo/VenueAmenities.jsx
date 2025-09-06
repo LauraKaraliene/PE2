@@ -7,7 +7,7 @@ export default function VenueAmenities({ meta }) {
         What this place offers
       </h3>
 
-      <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[color:var(--color-primary)]">
+      <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
         {/* Wifi */}
         {meta?.wifi && (
           <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
