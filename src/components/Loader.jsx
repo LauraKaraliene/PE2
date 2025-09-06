@@ -1,3 +1,5 @@
+import logo from "/favicon-logo.svg";
+
 export default function Loader({
   inline = false,
   size = 80,
@@ -13,7 +15,7 @@ export default function Loader({
     >
       <div className="container" style={{ perspective: "1000px" }}>
         <img
-          src="/favicon-logo.svg"
+          src={logo}
           alt=""
           width={size}
           height={size}
