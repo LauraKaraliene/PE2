@@ -94,7 +94,7 @@ export default function ProfileInfo({ profile, onBecameManager }) {
       />
 
       {/* Avatar and User Info */}
-      <div className="flex items-center gap-6 absolute left-6 -bottom-12 bg-[color:var(--color-background)] p-4 rounded-lg shadow-lg">
+      <div className="flex items-center gap-6 absolute left-6 -bottom-12 bg-[color:var(--color-background)] ps-0 p-4 rounded-lg shadow-lg">
         <img
           src={avatarUrl}
           alt={profile?.avatar?.alt || "User avatar"}
