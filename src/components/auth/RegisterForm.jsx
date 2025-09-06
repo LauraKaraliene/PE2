@@ -1,8 +1,19 @@
+/**
+ * Registration form component.
+ *
+ * - Handles user registration by submitting form data to the API.
+ * - Validates form inputs (name, email, password, avatar URL, etc.) using `react-hook-form`.
+ * - Displays error messages for invalid inputs or failed registration attempts.
+ * - Redirects users to the login page upon successful registration.
+ *
+ * @returns {JSX.Element} The rendered registration form.
+ */
+
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { API_AUTH } from "../../constants/api";
 import { apiRequest } from "../../utils/http";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function RegisterForm() {
   const navigate = useNavigate();
@@ -18,6 +29,15 @@ export default function RegisterForm() {
 
   const password = watch("password");
 
+  /**
+   * Handles form submission.
+   *
+   * - Sends registration data to the API.
+   * - Validates the avatar URL if provided.
+   * - Displays success or error notifications based on the response.
+   *
+   * @param {object} form - The form data containing user details.
+   */
   async function onSubmit(form) {
     // Build payload
     const payload = {

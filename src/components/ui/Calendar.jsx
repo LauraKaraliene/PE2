@@ -1,3 +1,21 @@
+/**
+ * Calendar component.
+ *
+ * - Renders a calendar UI for selecting dates.
+ * - Supports disabling specific dates and navigating between months.
+ * - Allows clearing the selected date or selecting today's date.
+ *
+ * @param {object} props - Component props.
+ * @param {string} [props.label] - The label for the calendar input.
+ * @param {string} [props.valueISO] - The currently selected date in ISO format.
+ * @param {string} [props.minISO] - The minimum selectable date in ISO format.
+ * @param {string[]} [props.disabledISO=[]] - An array of disabled dates in ISO format.
+ * @param {function} [props.onChange] - Callback function triggered when a date is selected or cleared.
+ * @param {string} [props.placeholder="dd/mm/yyyy"] - Placeholder text for the input.
+ * @param {string} [props.size="sm"] - The size of the calendar ("sm" or "lg").
+ * @returns {JSX.Element} The rendered calendar component.
+ */
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 /** Utils */

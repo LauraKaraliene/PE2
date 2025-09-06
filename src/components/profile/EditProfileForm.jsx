@@ -1,15 +1,35 @@
+/**
+ * Edit profile form component.
+ *
+ * - Allows users to update their profile information, including bio, avatar, and banner.
+ * - Validates URLs for avatar and banner images before submission.
+ * - Displays success or error messages based on the result of the update.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.profile - The current profile data to prefill the form.
+ * @param {string} [props.profile.bio] - The user's bio.
+ * @param {object} [props.profile.avatar] - The user's avatar data.
+ * @param {string} [props.profile.avatar.url] - The URL of the avatar image.
+ * @param {string} [props.profile.avatar.alt] - The alt text for the avatar image.
+ * @param {object} [props.profile.banner] - The user's banner data.
+ * @param {string} [props.profile.banner.url] - The URL of the banner image.
+ * @param {string} [props.profile.banner.alt] - The alt text for the banner image.
+ * @param {function} props.onClose - Callback function to close the form.
+ * @param {function} props.onUpdated - Callback function to refresh the profile after a successful update.
+ * @returns {JSX.Element} The rendered edit profile form.
+ */
+
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { API_PROFILES } from "../../constants/api";
 import { apiRequest } from "../../utils/http";
+import { useNotify } from "../store/notifications";
 
 export default function EditProfileForm({ profile, onClose, onUpdated }) {
-  const [bannerMsg, setBannerMsg] = useState({ message: "", type: "" });
+  const notify = useNotify();
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -21,91 +41,100 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
     },
   });
 
+  /**
+   * Handles form submission.
+   *
+   * - Validates and prepares the payload for the API request.
+   * - Sends the updated profile data to the server.
+   * - Displays success or error messages based on the response.
+   *
+   * @param {object} data - The form data containing updated profile fields.
+   */
   async function onSubmit(data) {
-    setBannerMsg({ message: "", type: "" });
-
     const payload = {};
-    if (data.bio?.trim()) {
-      payload.bio = data.bio.trim();
-    }
+    if (data.bio?.trim()) payload.bio = data.bio.trim();
 
-    // avatar
+    // Validate avatar URL
     if (data.avatarUrl && data.avatarAlt) {
       try {
-        const res = await fetch(data.avatarUrl, { method: "HEAD" });
-        if (res.ok) {
-          payload.avatar = {
-            url: data.avatarUrl,
-            alt: data.avatarAlt,
-          };
-        } else {
-          setBannerMsg({ message: "Invalid avatar URL", type: "error" });
-          return;
-        }
-      } catch (error) {
-        setBannerMsg({ message: "Cannot access avatar URL", type: "error" });
+        const res = await fetch(data.avatarUrl, {
+          method: "HEAD",
+          mode: "no-cors",
+        });
+        payload.avatar = { url: data.avatarUrl, alt: data.avatarAlt };
+      } catch {
+        notify.push({
+          type: "error",
+          message: "Invalid or unreachable avatar URL",
+        });
         return;
       }
+    } else if (data.avatarUrl || data.avatarAlt) {
+      notify.push({
+        type: "error",
+        message: "Avatar URL and Alt are both required",
+      });
+      return;
     }
 
-    // banner
+    // Validate banner URL
     if (data.bannerUrl && data.bannerAlt) {
       try {
-        const res = await fetch(data.bannerUrl, { method: "HEAD" });
-        if (res.ok) {
-          payload.banner = {
-            url: data.bannerUrl,
-            alt: data.bannerAlt,
-          };
-        } else {
-          setBannerMsg({ message: "Invalid banner URL", type: "error" });
-          return;
-        }
-      } catch (error) {
-        setBannerMsg({ message: "Cannot access banner URL", type: "error" });
+        const res = await fetch(data.bannerUrl, {
+          method: "HEAD",
+          mode: "no-cors",
+        });
+        payload.banner = { url: data.bannerUrl, alt: data.bannerAlt };
+      } catch {
+        notify.push({
+          type: "error",
+          message: "Invalid or unreachable banner URL",
+        });
         return;
       }
+    } else if (data.bannerUrl || data.bannerAlt) {
+      notify.push({
+        type: "error",
+        message: "Banner URL and Alt are both required",
+      });
+      return;
     }
 
-    if (Object.keys(payload).length === 0) {
-      setBannerMsg({
-        message: "Please fill in at least one field",
+    if (!Object.keys(payload).length) {
+      notify.push({
         type: "error",
+        message: "Please change at least one field",
       });
       return;
     }
 
     try {
       const user = JSON.parse(localStorage.getItem("user"));
+      if (!user?.name) {
+        notify.push({
+          type: "error",
+          message: "You must be logged in to update profile",
+        });
+        return;
+      }
 
-      const result = await apiRequest(
-        `${API_PROFILES}/${user.name}`,
+      await apiRequest(
+        `${API_PROFILES}/${user.name.toLowerCase()}`,
         "PUT",
         payload
       );
 
-      setBannerMsg({ message: "Profile updated!", type: "success" });
-      onUpdated();
-      setTimeout(onClose, 1000);
-    } catch (error) {
-      console.error("Profile update error:", error);
-      setBannerMsg({ message: "Profile update failed", type: "error" });
+      notify.push({ type: "success", message: "Profile updated!" });
+      onUpdated?.();
+      setTimeout(onClose, 100);
+    } catch (err) {
+      console.error("Profile update error:", err);
+      notify.push({ type: "error", message: "Profile update failed" });
     }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {bannerMsg.message && (
-        <div
-          className={`text-center py-2 text-sm rounded ${
-            bannerMsg.type === "success"
-              ? "bg-[color:var(--color-accent)] text-white"
-              : "bg-red-500 text-white"
-          }`}
-        >
-          {bannerMsg.message}
-        </div>
-      )}
       <p className="text-sm mt-6 text-[color:var(--color-primary)] mb-1">
         Please type in your Avatar URL and Alt text:
       </p>
@@ -121,6 +150,7 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
         {...register("avatarAlt")}
         className="w-full border border-[color:var(--color-background-gray)] text-sm p-2 rounded"
       />
+
       <p className="text-sm mt-4 text-[color:var(--color-primary)] mb-1">
         Please type in your Banner URL and Alt text:
       </p>

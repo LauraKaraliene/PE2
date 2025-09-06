@@ -1,5 +1,14 @@
 import { API_BASE } from "../constants/api";
 
+/**
+ * Custom error class for API-related errors.
+ *
+ * @class ApiError
+ * @extends Error
+ * @property {number} status - HTTP status code of the error.
+ * @property {string} message - Error message.
+ * @property {object|null} details - Additional details about the error (e.g., response body).
+ */
 export class ApiError extends Error {
   constructor(status, message, details) {
     super(message || "Unexpected error");
@@ -9,6 +18,18 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Makes an API request to the specified endpoint.
+ *
+ * @async
+ * @function apiRequest
+ * @param {string} endpoint - The API endpoint to call (relative or absolute URL).
+ * @param {object} [options={}] - Options for the request.
+ * @param {string} [options.method="GET"] - HTTP method (e.g., "GET", "POST").
+ * @param {object|null} [options.body=null] - Request body (will be JSON-stringified).
+ * @returns {Promise<any>} The parsed JSON response, or `null` for empty responses.
+ * @throws {ApiError} Throws an `ApiError` if the response is not successful.
+ */
 export async function apiRequest(endpoint, options = {}) {
   const { method = "GET", body } = options;
 

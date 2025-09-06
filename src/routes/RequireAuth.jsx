@@ -1,5 +1,17 @@
+/**
+ * Higher-order component for protecting routes that require authentication.
+ *
+ * - Checks if the user is authenticated by verifying the presence of an access token.
+ * - Redirects unauthenticated users to the login page with a `returnTo` query parameter.
+ * - Displays an error notification if the user is not authenticated.
+ *
+ * @param {object} props - Component props.
+ * @param {JSX.Element} props.children - The child components to render if the user is authenticated.
+ * @returns {JSX.Element} The child components if authenticated, or a redirect to the login page otherwise.
+ */
+
 import { Navigate, useLocation } from "react-router-dom";
-import { useNotify } from "../store/notifications";
+import { useNotify } from "../components/store/notifications";
 
 export default function RequireAuth({ children }) {
   const loc = useLocation();

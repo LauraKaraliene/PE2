@@ -1,3 +1,18 @@
+/**
+ * Host badge component.
+ *
+ * - Displays the host's avatar and name.
+ * - Falls back to a placeholder image and default name if no host data is provided.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.owner - The host's data.
+ * @param {string} [props.owner.name] - The name of the host.
+ * @param {object} [props.owner.avatar] - The host's avatar data.
+ * @param {string} [props.owner.avatar.url] - The URL of the host's avatar image.
+ * @param {string} [props.className=""] - Additional CSS classes for the component.
+ * @returns {JSX.Element|null} The rendered host badge component, or `null` if no host data is provided.
+ */
+
 import placeholder from "../../assets/placeholder.png";
 
 export default function HostBadge({ owner, className = "" }) {

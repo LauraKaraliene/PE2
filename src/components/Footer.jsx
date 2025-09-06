@@ -1,3 +1,12 @@
+/**
+ * Footer component.
+ *
+ * - Displays the footer section of the application.
+ * - Includes copyright information and a reference to the Noroff API.
+ *
+ * @returns {JSX.Element} The rendered footer component.
+ */
+
 export default function Footer() {
   return (
     <footer className="bg-[var(--color-primary)] text-[color:var(--color-background)] text-center py-4 mt-10">

@@ -1,8 +1,19 @@
+/**
+ * Login form component.
+ *
+ * - Handles user authentication by submitting login credentials to the API.
+ * - Validates form inputs (email and password) using `react-hook-form`.
+ * - Displays error messages for invalid inputs or failed login attempts.
+ * - Redirects authenticated users to their profile or a specified return URL.
+ *
+ * @returns {JSX.Element} The rendered login form.
+ */
+
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { API_AUTH } from "../../constants/api";
 import { apiRequest } from "../../utils/http";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -16,6 +27,16 @@ export default function LoginForm() {
     reset,
   } = useForm();
 
+  /**
+   * Handles form submission.
+   *
+   * - Sends login credentials to the API.
+   * - Stores the access token and user data in `localStorage`.
+   * - Redirects the user to their profile or a specified return URL.
+   * - Displays a success or error notification based on the response.
+   *
+   * @param {object} data - The form data containing email and password.
+   */
   async function onSubmit(data) {
     try {
       const res = await apiRequest(`${API_AUTH}/login`, {

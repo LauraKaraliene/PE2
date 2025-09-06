@@ -1,3 +1,15 @@
+/**
+ * Single venue page component.
+ *
+ * - Fetches and displays detailed information about a specific venue.
+ * - Handles ownership checks to determine if the user is the venue owner.
+ * - Displays different panels based on user role (e.g., `HostPanel`, `ManageBookingPanel`, `BookingPanel`).
+ * - Includes a back button for navigation and an image slider for venue media.
+ * - Shows a loader while the venue data is being fetched.
+ *
+ * @returns {JSX.Element} The rendered single venue page.
+ */
+
 import { useEffect, useMemo, useState, useCallback } from "react";
 import {
   useParams,

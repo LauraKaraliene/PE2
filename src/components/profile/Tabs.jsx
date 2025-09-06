@@ -1,3 +1,16 @@
+/**
+ * Tabs component.
+ *
+ * - Renders a tabbed interface with a list of tabs.
+ * - Highlights the active tab and calls a callback function when a tab is clicked.
+ *
+ * @param {object} props - Component props.
+ * @param {string[]} props.tabs - An array of tab labels.
+ * @param {string} props.activeTab - The currently active tab.
+ * @param {function} props.setActiveTab - Callback function to set the active tab.
+ * @returns {JSX.Element} The rendered tabs component.
+ */
+
 export default function Tabs({ tabs, activeTab, setActiveTab }) {
   return (
     <div

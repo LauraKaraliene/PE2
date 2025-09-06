@@ -1,3 +1,13 @@
+/**
+ * Application router configuration.
+ *
+ * - Defines all routes and their corresponding components.
+ * - Wraps protected routes with `RequireAuth` for authentication checks.
+ * - Uses `MainLayout` for routes that require a consistent layout.
+ *
+ * @returns {JSX.Element} The routing structure for the application.
+ */
+
 import { Navigate } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";

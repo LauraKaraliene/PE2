@@ -1,3 +1,14 @@
+/**
+ * Home page component.
+ *
+ * - Displays a list of venues fetched from the API.
+ * - Handles search queries and displays search results.
+ * - Includes pagination for navigating through venue pages.
+ * - Shows a loader while data is being fetched.
+ *
+ * @returns {JSX.Element} The rendered Home page.
+ */
+
 import React, { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import VenueCard from "../components/VenueCard";

@@ -1,3 +1,18 @@
+/**
+ * Modal component.
+ *
+ * - Displays a modal dialog with customizable content.
+ * - Includes a close button and supports conditional rendering based on the `isOpen` prop.
+ * - Provides a scrollable content area for larger content.
+ *
+ * @param {object} props - Component props.
+ * @param {boolean} props.isOpen - Determines whether the modal is visible.
+ * @param {function} props.onClose - Callback function to close the modal.
+ * @param {React.ReactNode} props.children - The content to display inside the modal.
+ * @param {string} [props.size="auto"] - Determines the modal's size (e.g., "calendar" for larger modals).
+ * @returns {JSX.Element|null} The rendered modal component, or `null` if `isOpen` is `false`.
+ */
+
 export default function Modal({ isOpen, onClose, children, size = "auto" }) {
   if (!isOpen) return null;
 

@@ -1,3 +1,18 @@
+/**
+ * Venue amenities component.
+ *
+ * - Displays a list of amenities offered by the venue.
+ * - Dynamically renders icons and labels for each amenity based on the `meta` prop.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.meta - Metadata about the venue's amenities.
+ * @param {boolean} [props.meta.wifi] - Indicates if the venue offers WiFi.
+ * @param {boolean} [props.meta.parking] - Indicates if the venue offers parking.
+ * @param {boolean} [props.meta.breakfast] - Indicates if the venue offers breakfast.
+ * @param {boolean} [props.meta.pets] - Indicates if the venue allows pets.
+ * @returns {JSX.Element} The rendered venue amenities component.
+ */
+
 import { FaWifi, FaUtensils, FaPaw } from "react-icons/fa";
 
 export default function VenueAmenities({ meta }) {

@@ -1,3 +1,15 @@
+/**
+ * Venue rating component.
+ *
+ * - Displays the venue's rating as a star icon and a numeric value.
+ * - If no rating is available, optionally displays a placeholder message.
+ *
+ * @param {object} props - Component props.
+ * @param {number} [props.rating] - The numeric rating of the venue (e.g., 4.5).
+ * @param {boolean} [props.showPlaceholder=false] - Whether to display a placeholder message if no rating is available.
+ * @returns {JSX.Element|null} The rendered venue rating component, or `null` if no rating and `showPlaceholder` is `false`.
+ */
+
 import { StarIcon as StarSolid } from "@heroicons/react/24/solid";
 import { StarIcon as StarOutline } from "@heroicons/react/24/outline";
 

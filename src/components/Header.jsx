@@ -1,3 +1,13 @@
+/**
+ * Header component.
+ *
+ * - Displays the application header with navigation links, a search bar, and user authentication controls.
+ * - Includes a responsive design with a hamburger menu for mobile devices.
+ * - Allows users to log in, log out, and navigate to different sections of the application.
+ *
+ * @returns {JSX.Element} The rendered header component.
+ */
+
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo-light.svg";
 import SearchBar from "./SearchBar";

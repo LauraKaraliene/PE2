@@ -1,9 +1,27 @@
+/**
+ * Host panel component.
+ *
+ * - Provides venue hosts with tools to manage their venues.
+ * - Allows editing venue details, deleting venues, and viewing bookings.
+ * - Displays a list of bookings with details such as dates, guests, and total price.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.venue - The venue data.
+ * @param {string} props.venue.id - The unique ID of the venue.
+ * @param {number} props.venue.price - The price per night for the venue.
+ * @param {Array} [props.venue.bookings] - An array of bookings for the venue.
+ * @param {string} [props.className=""] - Additional CSS classes for the component.
+ * @param {function} [props.onDeleted] - Callback function triggered after the venue is deleted.
+ * @param {function} [props.onChanged] - Callback function triggered after the venue is updated.
+ * @returns {JSX.Element} The rendered host panel component.
+ */
+
 import { useState } from "react";
 import Modal from "../common/Modal";
 import AddVenueForm from "../venue/AddVenueForm";
 import { API_VENUES } from "../../constants/api";
 import { apiRequest } from "../../utils/http";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function HostPanel({
   venue,
@@ -27,6 +45,12 @@ export default function HostPanel({
     return Math.max(1, Math.round((b - a) / 86_400_000));
   };
 
+  /**
+   * Handles venue deletion.
+   *
+   * - Prompts the user for confirmation before deleting the venue.
+   * - Sends a DELETE request to the API and triggers the `onDeleted` callback on success.
+   */
   async function handleDelete() {
     if (!confirm("Delete this venue? This cannot be undone.")) return;
     try {

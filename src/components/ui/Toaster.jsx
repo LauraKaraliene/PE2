@@ -1,10 +1,20 @@
+/**
+ * Toaster component.
+ *
+ * - Displays a list of notifications (toasts) managed by the notification store.
+ * - Automatically removes notifications after their specified duration.
+ *
+ * @returns {JSX.Element} The rendered toaster component.
+ */
+
 import { useEffect } from "react";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function Toaster() {
   const { list, remove } = useNotify();
 
   useEffect(() => {
+    // Set timers to remove notifications after their duration
     const timers = list.map((t) => setTimeout(() => remove(t.id), t.duration));
     return () => timers.forEach(clearTimeout);
   }, [list, remove]);

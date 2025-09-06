@@ -1,3 +1,28 @@
+/**
+ * Venue card component.
+ *
+ * - Displays a venue's details, including its image, name, location, price, and rating.
+ * - Allows users to add or remove the venue from their favorites.
+ * - Supports additional content via the `children` prop.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.venue - The venue data.
+ * @param {string} props.venue.id - The unique ID of the venue.
+ * @param {string} props.venue.name - The name of the venue.
+ * @param {number} props.venue.price - The price per night for the venue.
+ * @param {number} [props.venue.rating] - The rating of the venue.
+ * @param {object} props.venue.location - The location data of the venue.
+ * @param {string} props.venue.location.city - The city where the venue is located.
+ * @param {string} props.venue.location.country - The country where the venue is located.
+ * @param {Array} [props.venue.media] - An array of media objects for the venue.
+ * @param {string} [props.venue.media[].url] - The URL of the venue's image.
+ * @param {string} [props.venue.media[].alt] - The alt text for the venue's image.
+ * @param {React.ReactNode} [props.children] - Additional content to display in the card.
+ * @param {string} [props.to] - The URL to navigate to when the card is clicked.
+ * @param {object} [props.linkState] - State to pass to the `Link` component.
+ * @returns {JSX.Element} The rendered venue card component.
+ */
+
 import React from "react";
 import { Link } from "react-router-dom";
 import placeholder from "../assets/placeholder.png";
@@ -5,7 +30,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useFavorites } from "../context/FavoritesContext";
-import { useNotify } from "../store/notifications";
+import { useNotify } from "./store/notifications";
 
 export default function VenueCard({ venue, children, to, linkState }) {
   const { id, name, price, rating, location, media } = venue || {};

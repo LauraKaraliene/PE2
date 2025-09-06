@@ -1,3 +1,14 @@
+/**
+ * Main layout component.
+ *
+ * - Provides a consistent structure for pages, including a header, footer, and main content area.
+ * - Includes a search bar visible only on small screens.
+ * - Uses `Outlet` to render child routes dynamically.
+ * - Displays a `Toaster` for global notifications.
+ *
+ * @returns {JSX.Element} The rendered layout structure.
+ */
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Outlet } from "react-router-dom";

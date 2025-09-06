@@ -1,3 +1,12 @@
+/**
+ * Login page component.
+ *
+ * - Renders the login page with a back button, heading, and login form.
+ * - Uses the `AuthLayout` to provide a consistent layout for authentication pages.
+ *
+ * @returns {JSX.Element} The rendered login page component.
+ */
+
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import LoginForm from "../components/auth/LoginForm";

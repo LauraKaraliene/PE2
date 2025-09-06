@@ -1,3 +1,13 @@
+/**
+ * Root component of the application.
+ *
+ * - Wraps the application in essential providers (`FavoritesProvider`, `SearchProvider`).
+ * - Sets up routing using `BrowserRouter`.
+ * - Provides global error handling with `ErrorBoundary`.
+ *
+ * @returns {JSX.Element} The application wrapped with providers and routing.
+ */
+
 import "./styles/index.css";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";

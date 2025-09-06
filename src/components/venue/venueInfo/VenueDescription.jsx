@@ -1,3 +1,13 @@
+/**
+ * Venue description component.
+ *
+ * - Displays the description of a venue.
+ *
+ * @param {object} props - Component props.
+ * @param {string} props.description - The description text of the venue.
+ * @returns {JSX.Element} The rendered venue description component.
+ */
+
 export default function VenueDescription({ description }) {
   return (
     <>

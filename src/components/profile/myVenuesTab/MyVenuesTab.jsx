@@ -1,3 +1,17 @@
+/**
+ * My Venues tab component.
+ *
+ * - Displays a list of venues created by the user.
+ * - Allows venue managers to add new venues using a modal form.
+ * - Handles conditional rendering based on user permissions (`canCreate`).
+ *
+ * @param {object} props - Component props.
+ * @param {Array} props.venues - The list of venues created by the user.
+ * @param {boolean} props.canCreate - Indicates whether the user can create venues.
+ * @param {function} props.onRefresh - Callback function to refresh the venue list after a new venue is created.
+ * @returns {JSX.Element} The rendered My Venues tab.
+ */
+
 import { useState } from "react";
 import CreatedVenueCard from "./CreatedVenueCard";
 import Modal from "../../common/Modal";

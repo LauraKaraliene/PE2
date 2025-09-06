@@ -1,3 +1,12 @@
+/**
+ * Register page component.
+ *
+ * - Renders the registration page with a back button, heading, and registration form.
+ * - Uses the `AuthLayout` to provide a consistent layout for authentication pages.
+ *
+ * @returns {JSX.Element} The rendered registration page component.
+ */
+
 import { useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
 import RegisterForm from "../components/auth/RegisterForm";

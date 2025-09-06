@@ -1,3 +1,24 @@
+/**
+ * Created venue card component.
+ *
+ * - Displays a venue's image, name, location, and price.
+ * - Provides a link to the venue's detailed page.
+ * - Handles missing data gracefully by using placeholders for images and location.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.venue - The venue data to display.
+ * @param {string} props.venue.id - The ID of the venue.
+ * @param {string} props.venue.name - The name of the venue.
+ * @param {number} props.venue.price - The price per night for the venue.
+ * @param {object} props.venue.location - The location of the venue.
+ * @param {string} [props.venue.location.city] - The city where the venue is located.
+ * @param {string} [props.venue.location.country] - The country where the venue is located.
+ * @param {Array} props.venue.media - An array of media objects for the venue.
+ * @param {string} [props.venue.media[].url] - The URL of the venue's image.
+ * @param {string} [props.venue.media[].alt] - The alt text for the venue's image.
+ * @returns {JSX.Element|null} The rendered venue card, or `null` if no venue data is provided.
+ */
+
 import { Link } from "react-router-dom";
 import placeholder from "../../../assets/placeholder.png";
 

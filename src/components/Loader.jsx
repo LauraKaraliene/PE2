@@ -1,3 +1,17 @@
+/**
+ * Loader component.
+ *
+ * - Displays a loading spinner with optional customization.
+ * - Supports inline or full-page loading states.
+ * - Includes an accessible label for screen readers.
+ *
+ * @param {object} props - Component props.
+ * @param {boolean} [props.inline=false] - Whether the loader should be displayed inline or as a full-page overlay.
+ * @param {number} [props.size=80] - The size of the loader in pixels.
+ * @param {string} [props.label="Loading…"] - The accessible label for the loader (used for screen readers).
+ * @returns {JSX.Element} The rendered loader component.
+ */
+
 import logo from "/favicon-logo.svg";
 
 export default function Loader({

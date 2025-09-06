@@ -1,8 +1,25 @@
+/**
+ * Booking panel component.
+ *
+ * - Allows users to select check-in and check-out dates, the number of guests, and book a venue.
+ * - Validates user input and ensures dates and guest limits are within allowed ranges.
+ * - Displays the total cost based on the selected dates and venue price.
+ * - Handles API requests for creating bookings and displays success or error messages.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.venue - The venue data.
+ * @param {number} props.venue.price - The price per night for the venue.
+ * @param {number} props.venue.maxGuests - The maximum number of guests allowed at the venue.
+ * @param {Array} [props.venue.bookings] - An array of existing bookings for the venue.
+ * @param {string} [props.className=""] - Additional CSS classes for the component.
+ * @returns {JSX.Element} The rendered booking panel component.
+ */
+
 import { useState, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import createBooking from "../bookings/CreateBooking";
 import Calendar from "../ui/Calendar";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function BookingPanel({ venue, className = "" }) {
   const { price, maxGuests } = venue;
@@ -16,7 +33,7 @@ export default function BookingPanel({ venue, className = "" }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Booked dates
+  // Calculate booked dates
   const bookedDates = useMemo(() => {
     if (!venue?.bookings) return [];
     const dates = [];
@@ -30,6 +47,7 @@ export default function BookingPanel({ venue, className = "" }) {
     return dates;
   }, [venue?.bookings]);
 
+  // Calculate the number of nights
   const nights = useMemo(() => {
     if (!checkIn || !checkOut) return 0;
     const start = new Date(`${checkIn}T12:00:00`);
@@ -41,6 +59,13 @@ export default function BookingPanel({ venue, className = "" }) {
   const total = nights * price;
   const todayISO = new Date().toISOString().split("T")[0];
 
+  /**
+   * Handles the booking process.
+   *
+   * - Validates user input and ensures the user is logged in.
+   * - Sends a booking request to the API.
+   * - Displays success or error messages based on the result.
+   */
   async function handleBook() {
     if (!checkIn || !checkOut || nights === 0 || busy) return;
 

@@ -1,7 +1,23 @@
+/**
+ * Add venue form component.
+ *
+ * - Allows users to create or edit a venue.
+ * - Includes fields for venue details, amenities, images, and location.
+ * - Validates user input and displays error or success messages.
+ * - Handles API requests for creating or updating venues.
+ *
+ * @param {object} props - Component props.
+ * @param {function} props.onClose - Callback function to close the form.
+ * @param {function} [props.onCreated] - Callback function triggered after a venue is successfully created.
+ * @param {function} [props.onUpdated] - Callback function triggered after a venue is successfully updated.
+ * @param {object} [props.venue] - The venue data to prefill the form for editing.
+ * @returns {JSX.Element} The rendered add venue form component.
+ */
+
 import { useForm, useFieldArray } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
 import { apiRequest } from "../../utils/http";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
   const notify = useNotify((s) => s.push);
@@ -44,6 +60,15 @@ export default function AddVenueForm({ onClose, onCreated, onUpdated, venue }) {
   const mediaWatch = watch("media");
   const isEdit = !!venue?.id;
 
+  /**
+   * Handles form submission.
+   *
+   * - Validates user input and prepares the payload for the API request.
+   * - Sends the data to the server to create or update a venue.
+   * - Displays success or error messages based on the result.
+   *
+   * @param {object} data - The form data submitted by the user.
+   */
   async function onSubmit(data) {
     if (busy) return;
     setBannerMsg({ message: "", type: "" });

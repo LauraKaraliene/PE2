@@ -1,3 +1,19 @@
+/**
+ * Pagination component.
+ *
+ * - Dynamically renders page buttons based on the current page and total pages.
+ * - Handles navigation between pages using `onPageChange`.
+ * - Adjusts the number of visible page buttons for small screens.
+ * - Includes "Previous" and "Next" buttons for navigation.
+ *
+ * @param {object} props - Component props.
+ * @param {number} props.currentPage - The current active page.
+ * @param {number} props.totalPages - The total number of pages.
+ * @param {function} props.onPageChange - Callback function to handle page changes.
+ * @param {number} [props.maxVisiblePages=5] - Maximum number of visible page buttons.
+ * @returns {JSX.Element|null} The rendered pagination component, or `null` if there is only one page.
+ */
+
 import { useEffect, useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
@@ -107,6 +123,18 @@ export default function Pagination({
   );
 }
 
+/**
+ * Page button component.
+ *
+ * - Renders an individual page button.
+ * - Highlights the active page and provides a hover effect for inactive pages.
+ *
+ * @param {object} props - Component props.
+ * @param {number} props.page - The page number to display.
+ * @param {number} props.currentPage - The current active page.
+ * @param {function} props.onClick - Callback function to handle page button clicks.
+ * @returns {JSX.Element} The rendered page button.
+ */
 function PageBtn({ page, currentPage, onClick }) {
   const active = currentPage === page;
   return (

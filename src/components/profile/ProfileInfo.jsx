@@ -1,3 +1,26 @@
+/**
+ * Profile information component.
+ *
+ * - Displays the user's profile information, including banner, avatar, name, and email.
+ * - Provides options to edit the profile or become a venue manager.
+ * - Handles modals for editing the profile and becoming a venue manager.
+ * - Displays notifications and banners for success or error messages.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.profile - The user's profile data.
+ * @param {string} props.profile.name - The user's name.
+ * @param {string} props.profile.email - The user's email.
+ * @param {object} [props.profile.avatar] - The user's avatar data.
+ * @param {string} [props.profile.avatar.url] - The URL of the user's avatar image.
+ * @param {string} [props.profile.avatar.alt] - The alt text for the user's avatar image.
+ * @param {object} [props.profile.banner] - The user's banner data.
+ * @param {string} [props.profile.banner.url] - The URL of the user's banner image.
+ * @param {string} [props.profile.banner.alt] - The alt text for the user's banner image.
+ * @param {boolean} props.profile.venueManager - Indicates whether the user is a venue manager.
+ * @param {function} props.onBecameManager - Callback function to refresh the profile after becoming a venue manager.
+ * @returns {JSX.Element} The rendered profile information component.
+ */
+
 import { useState, useRef, useEffect } from "react";
 import placeholderBanner from "../../assets/placeholder.png";
 import placeholderAvatar from "../../assets/placeholder.png";
@@ -5,7 +28,7 @@ import Modal from "../common/Modal";
 import EditProfileForm from "./EditProfileForm";
 import { API_PROFILES } from "../../constants/api";
 import { apiRequest } from "../../utils/http";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 export default function ProfileInfo({ profile, onBecameManager }) {
   const notify = useNotify((s) => s.push);
@@ -26,17 +49,12 @@ export default function ProfileInfo({ profile, onBecameManager }) {
     return () => timers.current.forEach(clearTimeout);
   }, []);
 
-  function showBanner(type, text, autoclearMs = 2500) {
-    setBanner({ type, text });
-    if (autoclearMs) {
-      const t = setTimeout(
-        () => setBanner({ type: "", text: "" }),
-        autoclearMs
-      );
-      timers.current.push(t);
-    }
-  }
-
+  /**
+   * Handles the process of becoming a venue manager.
+   *
+   * - Sends a request to update the user's role to venue manager.
+   * - Displays success or error notifications based on the response.
+   */
   async function handleBecomeManager() {
     if (!agree || busy) return;
     setBanner({ type: "", text: "" });

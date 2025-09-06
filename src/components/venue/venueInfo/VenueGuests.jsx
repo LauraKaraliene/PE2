@@ -1,3 +1,13 @@
+/**
+ * Venue guests component.
+ *
+ * - Displays the maximum number of guests a venue can accommodate.
+ *
+ * @param {object} props - Component props.
+ * @param {number} props.maxGuests - The maximum number of guests allowed at the venue.
+ * @returns {JSX.Element} The rendered venue guests component.
+ */
+
 import { UsersIcon } from "@heroicons/react/24/outline";
 
 export default function VenueGuests({ maxGuests }) {

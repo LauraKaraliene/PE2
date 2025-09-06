@@ -1,3 +1,15 @@
+/**
+ * Search bar component.
+ *
+ * - Provides an input field for searching destinations.
+ * - Uses the `SearchContext` to manage the search query state.
+ * - Includes a magnifying glass icon for visual indication.
+ *
+ * @param {object} props - Component props.
+ * @param {string} [props.className=""] - Additional CSS classes for the component.
+ * @returns {JSX.Element} The rendered search bar component.
+ */
+
 import React from "react";
 import { useSearch } from "../context/SearchContext";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";

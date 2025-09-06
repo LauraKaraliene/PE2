@@ -1,3 +1,13 @@
+/**
+ * Upcoming bookings tab component.
+ *
+ * - Fetches and displays the user's upcoming bookings.
+ * - Filters bookings to show only those with end dates in the future.
+ * - Allows users to cancel bookings with a confirmation prompt.
+ *
+ * @returns {JSX.Element} The rendered upcoming bookings tab.
+ */
+
 import { useEffect, useState } from "react";
 import { getMyBookings, deleteBooking } from "../../bookings/CreateBooking";
 import BookedVenueCard from "../BookedVenueCard";
@@ -6,6 +16,9 @@ export default function UpcomingBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Loads the user's bookings and filters for upcoming bookings.
+   */
   async function load() {
     try {
       setLoading(true);
@@ -25,6 +38,14 @@ export default function UpcomingBookings() {
     load();
   }, []);
 
+  /**
+   * Cancels a booking.
+   *
+   * - Prompts the user for confirmation before canceling.
+   * - Removes the canceled booking from the list of upcoming bookings.
+   *
+   * @param {string} bookingId - The ID of the booking to cancel.
+   */
   async function onCancel(bookingId) {
     if (!confirm("Cancel this booking?")) return;
     try {

@@ -1,8 +1,19 @@
+/**
+ * Profile page component.
+ *
+ * - Fetches and displays the user's profile, including bookings and venues.
+ * - Handles tab navigation for "Upcoming Bookings", "Previous Bookings", "My Venues", and "Favorites".
+ * - Ensures only authorized users can view their own profile.
+ * - Displays a loader while the profile data is being fetched.
+ *
+ * @returns {JSX.Element} The rendered profile page.
+ */
+
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, Navigate, useSearchParams } from "react-router-dom";
 import { API_PROFILES } from "../constants/api";
 import { apiRequest } from "../utils/http";
-import { useNotify } from "../store/notifications";
+import { useNotify } from "../components/store/notifications";
 
 import ProfileInfo from "../components/profile/ProfileInfo";
 import Tabs from "../components/profile/Tabs";

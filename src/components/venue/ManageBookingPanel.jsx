@@ -1,10 +1,29 @@
+/**
+ * Manage booking panel component.
+ *
+ * - Displays details of a specific booking, including dates, guests, and total cost.
+ * - Allows users to change booking dates or cancel the booking.
+ * - Validates date changes to avoid conflicts with existing bookings.
+ * - Handles API requests for updating or deleting bookings.
+ *
+ * @param {object} props - Component props.
+ * @param {object} props.venue - The venue data, including bookings.
+ * @param {string} props.venue.id - The unique ID of the venue.
+ * @param {number} props.venue.price - The price per night for the venue.
+ * @param {Array} [props.venue.bookings] - An array of bookings for the venue.
+ * @param {string} props.bookingId - The ID of the booking to manage.
+ * @param {function} [props.onChanged] - Callback function triggered after a booking is updated or canceled.
+ * @param {string} [props.className=""] - Additional CSS classes for the component.
+ * @returns {JSX.Element} The rendered manage booking panel component.
+ */
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
 import { updateBooking, deleteBooking } from "../bookings/CreateBooking";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Calendar from "../ui/Calendar";
-import { useNotify } from "../../store/notifications";
+import { useNotify } from "../store/notifications";
 
 const PARENT_REFRESH_DELAY_MS = 1200;
 
