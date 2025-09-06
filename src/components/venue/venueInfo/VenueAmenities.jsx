@@ -7,11 +7,11 @@ export default function VenueAmenities({ meta }) {
         What this place offers
       </h3>
 
-      <ul className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[color:var(--color-primary)]">
+      <ul className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[color:var(--color-primary)]">
         {/* Wifi */}
         {meta?.wifi && (
-          <li className="inline-flex items-center gap-1 leading-none">
-            <FaWifi size={16} className="shrink-0 text-gray-500" aria-hidden />
+          <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
+            <FaWifi size={16} className="shrink-0 text-" aria-hidden />
             <span className="leading-none text-[color:var(--color-neutral)]">
               Wifi
             </span>
@@ -20,8 +20,8 @@ export default function VenueAmenities({ meta }) {
 
         {/* Parking */}
         {meta?.parking && (
-          <li className="inline-flex items-center gap-1 leading-none">
-            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-700 text-[10px] font-semibold shrink-0 text-gray-700">
+          <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
+            <span className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-[color:var(--color-neutral) text-[10px] font-semibold shrink-0 text-[color:var(--color-neutral)]">
               P
             </span>
             <span className="leading-none text-[color:var(--color-neutral)]">
@@ -32,10 +32,10 @@ export default function VenueAmenities({ meta }) {
 
         {/* Breakfast */}
         {meta?.breakfast && (
-          <li className="inline-flex items-center gap-1 leading-none">
+          <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
             <FaUtensils
               size={14}
-              className="shrink-0 text-gray-500"
+              className="shrink-0 text-[color:var(--color-neutral)]"
               aria-hidden
             />
             <span className="leading-none text-[color:var(--color-neutral)]">
@@ -46,8 +46,12 @@ export default function VenueAmenities({ meta }) {
 
         {/* Pets */}
         {meta?.pets && (
-          <li className="inline-flex items-center gap-1 leading-none">
-            <FaPaw size={14} className="shrink-0 text-gray-500" aria-hidden />
+          <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
+            <FaPaw
+              size={14}
+              className="shrink-0 text-[color:var(--color-neutral)]"
+              aria-hidden
+            />
             <span className="leading-none text-[color:var(--color-neutral)]">
               Pets allowed
             </span>

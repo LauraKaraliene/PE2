@@ -39,7 +39,7 @@ export default function ImageSlider({ images }) {
 
   return (
     <div
-      className="relative w-full aspect-video overflow-hidden rounded shadow"
+      className="relative w-full aspect-video overflow-hidden rounded shadow-xl"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -55,11 +55,11 @@ export default function ImageSlider({ images }) {
         <>
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 bg-[color:var(--color-background)] bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-[color:var(--color-background)] p-2 rounded-full align-center flex justify-center items-center cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-[color:var(--color-neutral)]"
+              className="w-4 h-4 text-[color:var(--color-neutral)]"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
@@ -76,11 +76,12 @@ export default function ImageSlider({ images }) {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 bg-[color:var(--color-background)] bg-opacity-70 hover:bg-opacity-100 p-2 rounded-full shadow"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-[color:var(--color-background)] p-2 rounded-full
+              align-center flex justify-center items-center cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 text-[color:var(--color-neutral)]"
+              className="w-4 h-4 text-[color:var(--color-neutral)]"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
