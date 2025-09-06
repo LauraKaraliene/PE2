@@ -18,7 +18,7 @@ export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
         </button>
 
         {!canCreate && (
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-red-600">
             You must be a venue manager to add a venue. Use “Become Manager” on
             your profile.
           </p>
@@ -35,7 +35,7 @@ export default function MyVenuesTab({ venues = [], canCreate, onRefresh }) {
         </div>
       )}
 
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal isOpen={open} onClose={() => setOpen(false)} size="auto">
         <h3 className="text-lg font-semibold mb-4">Create venue</h3>
         <AddVenueForm
           onClose={() => setOpen(false)}

@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { API_PROFILES, apiRequest } from "../../constants/api";
+import { API_PROFILES } from "../../constants/api";
+import { apiRequest } from "../../utils/http";
 
 export default function EditProfileForm({ profile, onClose, onUpdated }) {
   const [bannerMsg, setBannerMsg] = useState({ message: "", type: "" });
@@ -78,7 +79,7 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const result = await apiRequest(
-        `/holidaze/profiles/${user.name}`,
+        `${API_PROFILES}/${user.name}`,
         "PUT",
         payload
       );

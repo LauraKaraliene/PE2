@@ -6,6 +6,7 @@ import SingleVenue from "../pages/SingleVenue";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import ProfilePage from "../pages/ProfilePage";
+import RequireAuth from "../routes/RequireAuth";
 
 export default function AppRouter() {
   return (
@@ -14,7 +15,14 @@ export default function AppRouter() {
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/venues/:id" element={<SingleVenue />} />
-        <Route path="/profile/:username" element={<ProfilePage />} />
+        <Route
+          path="/profile/:username"
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
       </Route>
 
       {/* Auth routes (no MainLayout) */}
@@ -23,3 +31,20 @@ export default function AppRouter() {
     </Routes>
   );
 }
+
+// export default function AppRouter() {
+//   return (
+//     <Routes>
+//       {/* Main routes with MainLayout */}
+//       <Route element={<MainLayout />}>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/venues/:id" element={<SingleVenue />} />
+//         <Route path="/profile/:username" element={<ProfilePage />} />
+//       </Route>
+
+//       {/* Auth routes (no MainLayout) */}
+//       <Route path="/register" element={<Register />} />
+//       <Route path="/login" element={<Login />} />
+//     </Routes>
+//   );
+// }

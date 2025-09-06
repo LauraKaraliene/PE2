@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { apiRequest } from "../../constants/api";
 import Modal from "../common/Modal";
 import AddVenueForm from "../venue/AddVenueForm";
 import { API_VENUES } from "../../constants/api";
+import { apiRequest } from "../../utils/http";
+import { useNotify } from "../../store/notifications";
 
 export default function HostPanel({
   venue,
@@ -10,6 +11,7 @@ export default function HostPanel({
   onDeleted,
   onChanged,
 }) {
+  const notify = useNotify((s) => s.push);
   const [deleting, setDeleting] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
 
@@ -22,20 +24,20 @@ export default function HostPanel({
     a.setHours(12, 0, 0, 0);
     const b = new Date(to);
     b.setHours(12, 0, 0, 0);
-    const dayMs = 86_400_000;
-    return Math.max(1, Math.round((b - a) / dayMs));
+    return Math.max(1, Math.round((b - a) / 86_400_000));
   };
 
   async function handleDelete() {
     if (!confirm("Delete this venue? This cannot be undone.")) return;
     try {
       setDeleting(true);
-      await apiRequest(`${API_VENUES}/${venue.id}`, "DELETE");
+      await apiRequest(`${API_VENUES}/${venue.id}`, { method: "DELETE" });
+      notify({ type: "success", message: "Venue deleted." });
       onDeleted?.();
     } catch (e) {
       console.error("Delete failed", e);
+      notify({ type: "error", message: "Could not delete venue." });
       setDeleting(false);
-      alert("Could not delete venue.");
     }
   }
 
@@ -53,13 +55,34 @@ export default function HostPanel({
         >
           Edit Venue
         </button>
-
         <button
           type="button"
           onClick={handleDelete}
           disabled={deleting}
-          className="text-red-600 border border-red-200 rounded px-3 py-2 text-sm disabled:opacity-60"
+          className="text-red-600 border border-red-200 rounded px-3 py-2 text-sm disabled:opacity-60 inline-flex items-center gap-2"
         >
+          {deleting && (
+            <svg
+              className="animate-spin w-4 h-4"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              />
+            </svg>
+          )}
           {deleting ? "Deleting…" : "Delete Venue"}
         </button>
       </div>
@@ -79,16 +102,15 @@ export default function HostPanel({
                 key={b.id}
                 className="border border-[color:var(--color-background-gray)] rounded p-3 text-sm shadow-sm"
               >
-                <div className="flex ">
+                <div className="flex">
                   <span className="font-medium">
                     {formatDate(b.dateFrom)} → {formatDate(b.dateTo)}
                   </span>
                 </div>
-                <div className="flex  mt-1">
+                <div className="flex mt-1">
                   <span>Guests: {b.guests}</span>
                 </div>
                 <div className="text-gray-500 mt-1">By: {customer}</div>
-
                 <div className="flex justify-between mt-1">
                   <span className="text-gray-600">
                     {n} night{n > 1 ? "s" : ""}

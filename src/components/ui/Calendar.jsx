@@ -81,7 +81,8 @@ export default function Calendar({
   }, [valueISO]);
 
   const cells = buildMonthGrid(view.getFullYear(), view.getMonth());
-  const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
+  // const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
+  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const todayISO = dateToISO(new Date());
 
   const sz =
@@ -173,7 +174,7 @@ export default function Calendar({
           >
             {weekDays.map((w) => (
               <div key={w} className="text-center py-1">
-                {w}
+                {w[0]}
               </div>
             ))}
           </div>
@@ -207,7 +208,7 @@ export default function Calendar({
 
               return (
                 <button
-                  key={i}
+                  key={iso}
                   type="button"
                   className={cls}
                   onClick={() => pick(d)}

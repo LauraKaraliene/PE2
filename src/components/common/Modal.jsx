@@ -1,17 +1,21 @@
-export default function Modal({ isOpen, onClose, children }) {
+export default function Modal({ isOpen, onClose, children, size = "auto" }) {
   if (!isOpen) return null;
+
+  const modalClasses =
+    size === "calendar" ? "min-h-[450px] max-h-[90vh]" : "max-h-[90vh]";
 
   return (
     <div className="fixed inset-0 backdrop-blur-xl flex justify-center items-center z-50">
-      <div className="bg-[color:var(--color-background)] rounded-lg shadow-lg max-w-lg w-full relative mx-4 max-h-[100vh] min-h-[300px] flex flex-col">
+      <div
+        className={`bg-white rounded-lg shadow-lg max-w-lg w-full relative mx-4 flex flex-col ${modalClasses}`}
+      >
         <button
-          className="absolute top-2 right-5 text-xl font-bold text-[color:var(--color-neutral)] hover:scale-110 transition-transform duration-200 z-10"
+          className="absolute top-2 right-5 text-xl font-bold text-black hover:scale-130 transition-transform duration-200 z-10"
           onClick={onClose}
-          aria-label="Close modal"
         >
           &times;
         </button>
-        <div className="flex-1 flex flex-col p-6">{children}</div>
+        <div className="flex-1 overflow-y-auto p-6">{children}</div>
       </div>
     </div>
   );

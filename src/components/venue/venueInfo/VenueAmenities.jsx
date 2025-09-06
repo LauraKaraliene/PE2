@@ -1,4 +1,4 @@
-import { FaWifi, FaParking, FaUtensils, FaPaw } from "react-icons/fa";
+import { FaWifi, FaUtensils, FaPaw } from "react-icons/fa";
 
 export default function VenueAmenities({ meta }) {
   return (

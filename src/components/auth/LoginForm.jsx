@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { API_AUTH } from "../../constants/api";
-import { Link } from "react-router-dom";
+import { apiRequest } from "../../utils/http";
+import { useNotify } from "../../store/notifications";
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const [banner, setBanner] = useState({ message: "", type: "" });
+  const [sp] = useSearchParams();
+  const notify = useNotify((s) => s.push);
 
   const {
     register,
@@ -16,103 +17,76 @@ export default function LoginForm() {
   } = useForm();
 
   async function onSubmit(data) {
-    setBanner({ message: "", type: "" });
-
     try {
-      const res = await fetch(`${API_AUTH}/login`, {
+      const res = await apiRequest(`${API_AUTH}/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
+        body: { email: data.email, password: data.password },
       });
 
-      if (!res.ok) throw new Error("Invalid credentials");
+      // Persist auth
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("user", JSON.stringify(res.data));
 
-      const result = await res.json();
-      localStorage.setItem("accessToken", result.data.accessToken);
-      localStorage.setItem("user", JSON.stringify(result.data));
-
-      setBanner({ message: "Login successful!", type: "success" });
-
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
-    } catch (err) {
-      setBanner({ message: err.message, type: "error" });
-      setTimeout(() => {
-        setBanner({ message: "", type: "" });
-        reset();
-      }, 3000);
+      // Toast + redirect
+      notify({ type: "success", message: "Welcome back!" });
+      const returnTo = sp.get("returnTo") || `/profile/${res.data.name}` || "/";
+      navigate(returnTo, { replace: true });
+    } catch (e) {
+      notify({ type: "error", message: e?.message || "Login failed." });
+      reset();
     }
   }
 
   return (
-    <>
-      {/* Slide-down banner */}
-      {banner.message && (
-        <div
-          className={`fixed top-0 left-0 right-0 text-white text-center py-3 z-50 transition-all duration-300 ${
-            banner.type === "success"
-              ? "bg-[color:var(--color-primary)]"
-              : "bg-red-600"
-          }`}
-        >
-          {banner.message}
-        </div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4 bg-[color:var(--color-background)] rounded-md shadow-md p-8 mt-7"
+    >
+      <input
+        type="email"
+        placeholder="Email"
+        autoComplete="email"
+        autoFocus
+        className="w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
+        {...register("email", {
+          required: "Email is required",
+          pattern: {
+            value: /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
+            message: "Must be a stud.noroff.no email",
+          },
+        })}
+      />
+      {errors.email && (
+        <p className="text-red-600 text-sm">{errors.email.message}</p>
       )}
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 bg-[color:var(--color-background)] rounded-md shadow-md p-8 mt-7"
-      >
-        <input
-          type="email"
-          placeholder="Email"
-          autoComplete="email"
-          autoFocus
-          className="w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
-              message: "Must be a stud.noroff.no email",
-            },
-          })}
-        />
-        {errors.email && (
-          <p className="text-red-600 text-sm">{errors.email.message}</p>
-        )}
+      <input
+        type="password"
+        placeholder="Password"
+        autoComplete="current-password"
+        className="w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
+        {...register("password", {
+          required: "Password is required",
+          minLength: { value: 8, message: "Minimum 8 characters" },
+        })}
+      />
+      {errors.password && (
+        <p className="text-red-600 text-sm">{errors.password.message}</p>
+      )}
 
-        <input
-          type="password"
-          placeholder="Password"
-          autoComplete="current-password"
-          className="w-full border border-[color:var(--color-background-gray)] py-2 px-3 rounded focus:outline-none focus:ring focus:ring-[color:var(--color-accent)] placeholder:text-sm"
-          {...register("password", {
-            required: "Password is required",
-            minLength: { value: 8, message: "Minimum 8 characters" },
-          })}
-        />
-        {errors.password && (
-          <p className="text-red-600 text-sm">{errors.password.message}</p>
-        )}
+      <button type="submit" className="btn btn-primary w-full">
+        Login
+      </button>
 
-        <button type="submit" className="btn btn-primary w-full">
-          Login
-        </button>
-
-        <div className="text-start text-sm space-y-1 pt-2">
-          <p>Don’t have an account?</p>
-          <Link
-            to="/register"
-            className="text-[color:var(--color-primary)] hover:underline underline-offset-2 font-medium"
-          >
-            Register here
-          </Link>
-        </div>
-      </form>
-    </>
+      <div className="text-start text-sm space-y-1 pt-2">
+        <p>Don’t have an account?</p>
+        <Link
+          to="/register"
+          className="text-[color:var(--color-primary)] hover:underline underline-offset-2 font-medium"
+        >
+          Register here
+        </Link>
+      </div>
+    </form>
   );
 }

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Modal from "../common/Modal";
-import { API_BOOKINGS, apiRequest } from "../../constants/api";
+import { updateBooking, deleteBooking } from "../bookings/CreateBooking";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import Calendar from "../ui/Calendar";
+import { useNotify } from "../../store/notifications";
 
-const MSG_CLEAR_MS = 3000;
 const PARENT_REFRESH_DELAY_MS = 1200;
 
 export default function ManageBookingPanel({
@@ -14,12 +14,13 @@ export default function ManageBookingPanel({
   onChanged,
   className = "",
 }) {
+  const notify = useNotify((s) => s.push);
+
   const current =
     (venue?.bookings || []).find((b) => b.id === bookingId) || null;
 
   const [openEdit, setOpenEdit] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState({ type: "", text: "" });
 
   const [editCheckIn, setEditCheckIn] = useState("");
   const [editCheckOut, setEditCheckOut] = useState("");
@@ -90,37 +91,35 @@ export default function ManageBookingPanel({
   const n = current ? nights(current.dateFrom, current.dateTo) : 0;
   const total = current ? n * price : 0;
 
-  function showMessage(type, text) {
-    setMsg({ type, text });
-    const t = setTimeout(() => setMsg({ type: "", text: "" }), MSG_CLEAR_MS);
-    timers.current.push(t);
-  }
   function afterSuccessRefresh() {
     if (!onChanged) return;
-    const t = setTimeout(() => {
-      onChanged();
-    }, PARENT_REFRESH_DELAY_MS);
+    const t = setTimeout(() => onChanged(), PARENT_REFRESH_DELAY_MS);
     timers.current.push(t);
   }
+
+  const toISO = (s) =>
+    typeof s === "string" && s.includes("T") ? s : `${s}T00:00:00.000Z`;
 
   async function saveNewDates() {
     if (!editCheckIn || !editCheckOut) return;
     if (new Date(editCheckIn) >= new Date(editCheckOut)) return;
     if (editHasConflict) return;
 
-    setMsg({ type: "", text: "" });
     try {
       setBusy(true);
-      await apiRequest(`${API_BOOKINGS}/${bookingId}`, "PUT", {
+      await updateBooking(bookingId, {
         dateFrom: editCheckIn,
         dateTo: editCheckOut,
       });
       setOpenEdit(false);
-      showMessage("success", "Booking updated.");
+      notify({ type: "success", message: "Booking updated." });
       afterSuccessRefresh();
     } catch (e) {
       console.error(e);
-      showMessage("error", "Could not update booking.");
+      notify({
+        type: "error",
+        message: e?.message || "Could not update booking.",
+      });
     } finally {
       setBusy(false);
     }
@@ -128,15 +127,14 @@ export default function ManageBookingPanel({
 
   async function cancelBooking() {
     if (!confirm("Cancel this booking?")) return;
-    setMsg({ type: "", text: "" });
     try {
       setBusy(true);
-      await apiRequest(`${API_BOOKINGS}/${bookingId}`, "DELETE");
-      showMessage("success", "Booking cancelled.");
+      await deleteBooking(bookingId);
+      notify({ type: "success", message: "Booking cancelled." });
       afterSuccessRefresh();
     } catch (e) {
       console.error(e);
-      showMessage("error", "Could not cancel booking.");
+      notify({ type: "error", message: "Could not cancel booking." });
     } finally {
       setBusy(false);
     }
@@ -172,19 +170,6 @@ export default function ManageBookingPanel({
       <h1 className="text-xl font-bold text-[color:var(--color-neutral)]">
         Your booking
       </h1>
-
-      {msg.text && (
-        <div
-          aria-live="polite"
-          className={`mt-3 mb-2 text-sm rounded px-3 py-2 ${
-            msg.type === "error"
-              ? "bg-red-50 text-red-700"
-              : "bg-[color:var(--color-accent-light)] text-[color:var(--color-neutral)]"
-          }`}
-        >
-          {msg.text}
-        </div>
-      )}
 
       <div className="mt-3 space-y-1 text-sm">
         <div className="flex justify-between">
@@ -223,7 +208,11 @@ export default function ManageBookingPanel({
         </button>
       </div>
 
-      <Modal isOpen={openEdit} onClose={() => setOpenEdit(false)}>
+      <Modal
+        isOpen={openEdit}
+        onClose={() => setOpenEdit(false)}
+        size="calendar"
+      >
         <div className="flex flex-col h-full">
           <div className="flex-1">
             <h3 className="text-lg font-semibold mb-4 text-[color:var(--color-neutral)]">
@@ -238,16 +227,6 @@ export default function ManageBookingPanel({
                 disabledISO={bookedDates}
                 onChange={(iso) => {
                   setEditCheckIn(iso);
-
-                  if (
-                    editCheckOut &&
-                    iso &&
-                    new Date(`${editCheckOut}T00:00:00`) <=
-                      new Date(`${iso}T00:00:00`)
-                  ) {
-                    setEditCheckOut("");
-                  }
-                  setMsg({ type: "", text: "" });
                 }}
               />
 
@@ -258,7 +237,6 @@ export default function ManageBookingPanel({
                 disabledISO={bookedDates}
                 onChange={(iso) => {
                   setEditCheckOut(iso);
-                  setMsg({ type: "", text: "" });
                 }}
               />
 

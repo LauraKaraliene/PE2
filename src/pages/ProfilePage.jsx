@@ -1,6 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useParams, Navigate, useSearchParams } from "react-router-dom";
-import { API_PROFILES, apiRequest } from "../constants/api";
+import { API_PROFILES } from "../constants/api";
+import { apiRequest } from "../utils/http";
+import { useNotify } from "../store/notifications";
+
 import ProfileInfo from "../components/profile/ProfileInfo";
 import Tabs from "../components/profile/Tabs";
 import PreviousBookings from "../components/profile/previousBookingsTab/PreviousBookings";
@@ -31,6 +34,9 @@ export default function ProfilePage() {
   const [unauthorized, setUnauthorized] = useState(false);
   const [activeTab, setActiveTab] = useState(initialTab);
 
+  const notify = useNotify((s) => s.push);
+  const erroredOnce = useRef(false);
+
   const fetchProfile = useCallback(async () => {
     const user = JSON.parse(localStorage.getItem("user"));
     const token = localStorage.getItem("accessToken");
@@ -43,21 +49,39 @@ export default function ProfilePage() {
     try {
       setLoading(true);
       const minDelay = new Promise((res) => setTimeout(res, 1000));
+
       const result = await apiRequest(
         `${API_PROFILES}/${user.name}?_bookings=true&_venues=true`
       );
+
       await minDelay;
       setProfile(result.data);
     } catch (e) {
       console.error("Failed to fetch profile:", e);
+      if (!erroredOnce.current) {
+        erroredOnce.current = true;
+        notify({
+          type: "error",
+          message: e?.message || "Could not load profile.",
+        });
+      }
     } finally {
       setLoading(false);
     }
-  }, [username]);
+  }, [username, notify]);
 
   useEffect(() => {
     fetchProfile();
   }, [fetchProfile]);
+
+  useEffect(() => {
+    if (unauthorized) {
+      notify({
+        type: "error",
+        message: "You can only view your own profile. Please log in.",
+      });
+    }
+  }, [unauthorized, notify]);
 
   useEffect(() => {
     const slug = (searchParams.get("tab") || "upcoming").toLowerCase();
@@ -97,7 +121,6 @@ export default function ProfilePage() {
 
   return (
     <section className="max-w-4xl mx-auto px-4">
-      {/* <ProfileInfo profile={profile} /> */}
       <ProfileInfo profile={profile} onBecameManager={fetchProfile} />
 
       <Tabs

@@ -6,7 +6,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
-import { apiRequest } from "../constants/api";
+import { apiRequest } from "../utils/http";
+import { API_VENUES } from "../constants/api";
 import ImageSlider from "../components/venue/ImageSlider";
 import VenueInfo from "../components/venue/VenueInfo";
 import BookingPanel from "../components/venue/BookingPanel";
@@ -45,7 +46,7 @@ export default function SingleVenue() {
       const minDelay = new Promise((res) => setTimeout(res, 1000));
 
       const res = await apiRequest(
-        `/holidaze/venues/${id}?_owner=true&_bookings=true`
+        `${API_VENUES}/${id}?_owner=true&_bookings=true`
       );
       const v = res?.data;
       if (!v) throw new Error("Venue not found");

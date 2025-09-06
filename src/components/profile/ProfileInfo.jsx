@@ -3,9 +3,12 @@ import placeholderBanner from "../../assets/placeholder.png";
 import placeholderAvatar from "../../assets/placeholder.png";
 import Modal from "../common/Modal";
 import EditProfileForm from "./EditProfileForm";
-import { apiRequest, API_PROFILES } from "../../constants/api";
+import { API_PROFILES } from "../../constants/api";
+import { apiRequest } from "../../utils/http";
+import { useNotify } from "../../store/notifications";
 
 export default function ProfileInfo({ profile, onBecameManager }) {
+  const notify = useNotify((s) => s.push);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showManagerModal, setShowManagerModal] = useState(false);
   const [agree, setAgree] = useState(false);
@@ -37,26 +40,32 @@ export default function ProfileInfo({ profile, onBecameManager }) {
   async function handleBecomeManager() {
     if (!agree || busy) return;
     setBanner({ type: "", text: "" });
+
     try {
       setBusy(true);
-      await apiRequest(`${API_PROFILES}/${name}`, "PUT", {
-        venueManager: true,
+      await apiRequest(`${API_PROFILES}/${name}`, {
+        method: "PUT",
+        body: { venueManager: true },
       });
-      showBanner(
-        "success",
-        "You're now a venue manager! You can add venues in the My Venues tab."
-      );
+
+      notify({
+        type: "success",
+        message:
+          "You are now a venue manager! You can add venues in the My Venues tab.",
+      });
       setShowManagerModal(false);
-      // Ask parent to refresh profile (no full page reload needed)
       onBecameManager?.();
-      // Fallback: light reload if parent didn't pass a refresher
+
       if (!onBecameManager) {
         const t = setTimeout(() => window.location.reload(), 800);
         timers.current.push(t);
       }
     } catch (e) {
       console.error(e);
-      showBanner("error", "Could not update role. Please try again.");
+      notify({
+        type: "error",
+        message: e?.message || "Could not update role. Please try again.",
+      });
     } finally {
       setBusy(false);
     }
@@ -64,7 +73,6 @@ export default function ProfileInfo({ profile, onBecameManager }) {
 
   return (
     <div className="relative mb-20">
-      {/* Top inline banner */}
       {banner.text && (
         <div
           aria-live="polite"
@@ -98,13 +106,23 @@ export default function ProfileInfo({ profile, onBecameManager }) {
           </h1>
           <p className="text-sm text-[color:var(--color-neutral)]">{email}</p>
 
-          {/* Edit button below email */}
+          {/* Edit Profile */}
           <button
             onClick={() => setShowEditModal(true)}
-            className="text-[color:var(--color-accent)] text-sm mt-2 hover:underline underline-offset-4"
+            className="text-[color:var(--color-accent)] text-sm mt-2 hover:underline underline-offset-4 block"
           >
             Edit Profile
           </button>
+
+          {/* Become Manager (only if not manager yet) */}
+          {!isManager && (
+            <button
+              onClick={() => setShowManagerModal(true)}
+              className="text-[color:var(--color-accent)] text-sm mt-1 hover:underline underline-offset-4 block"
+            >
+              Become a Venue Manager
+            </button>
+          )}
         </div>
       </div>
 
@@ -117,7 +135,6 @@ export default function ProfileInfo({ profile, onBecameManager }) {
           profile={profile}
           onClose={() => setShowEditModal(false)}
           onUpdated={() => {
-            // refresh after edit (your existing behavior)
             setTimeout(() => {
               window.location.reload();
             }, 1200);

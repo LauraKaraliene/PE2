@@ -2,13 +2,12 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import VenueCard from "../components/VenueCard";
 import Pagination from "../components/common/Pagination";
-import { apiRequest } from "../constants/api";
+import { apiRequest } from "../utils/http";
 import { useSearch } from "../context/SearchContext";
 import Loader from "../components/Loader";
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const initialPage = useMemo(
     () => Math.max(1, parseInt(searchParams.get("page") || "1", 10)),
     [searchParams]

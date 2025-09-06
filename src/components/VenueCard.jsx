@@ -5,6 +5,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as HeartOutline } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolid } from "@heroicons/react/24/solid";
 import { useFavorites } from "../context/FavoritesContext";
+import { useNotify } from "../store/notifications";
 
 export default function VenueCard({ venue, children, to, linkState }) {
   const { id, name, price, rating, location, media } = venue || {};
@@ -14,9 +15,34 @@ export default function VenueCard({ venue, children, to, linkState }) {
   const country = location?.country || "Unknown country";
 
   const { isFavorite, toggleFavorite } = useFavorites();
+  const notify = useNotify((s) => s.push);
+
   const fav = isFavorite(id);
   const href = to ?? `/venues/${id}`;
   const hasRating = typeof rating === "number" && rating > 0;
+
+  function handleToggleFav(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    toggleFavorite(venue);
+
+    // Success toast
+    notify({
+      type: "success",
+      message: fav ? "Removed from favorites" : "Added to favorites",
+    });
+
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const isGuest = !user?.name;
+    if (isGuest && !sessionStorage.getItem("favGuestHintShown")) {
+      sessionStorage.setItem("favGuestHintShown", "1");
+      notify({
+        type: "info",
+        message: "Favorites are saved for this browser only until you log in.",
+      });
+    }
+  }
 
   return (
     <Link to={href} state={linkState} className="block group">
@@ -39,11 +65,7 @@ export default function VenueCard({ venue, children, to, linkState }) {
           />
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleFavorite(venue);
-            }}
+            onClick={handleToggleFav}
             className="absolute top-2 right-2 cursor-pointer z-10 rounded-full w-8 h-8 flex items-center justify-center transition-colors"
             aria-label={fav ? "Remove from favorites" : "Add to favorites"}
           >
@@ -57,7 +79,7 @@ export default function VenueCard({ venue, children, to, linkState }) {
 
         {/* Content */}
         <div className="p-3 flex-1 flex flex-col gap-1 mb-1">
-          <h3 className="font-semibold text-sm  py-2">
+          <h3 className="font-semibold text-sm py-2">
             {city}, {country}
           </h3>
 
@@ -78,7 +100,7 @@ export default function VenueCard({ venue, children, to, linkState }) {
             {hasRating && (
               <span className="inline-flex items-center gap-1 leading-none h-4">
                 <StarIcon
-                  className="w-4 h-4 text-[color:var(--color-secondary)]  shrink-0 -mt-px"
+                  className="w-4 h-4 text-[color:var(--color-secondary)] shrink-0 -mt-px"
                   aria-hidden="true"
                 />
                 <span className="leading-none text-[color:var(--color-neutral)]">
