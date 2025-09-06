@@ -13,7 +13,7 @@ export default function Loader({
     >
       <div className="container" style={{ perspective: "1000px" }}>
         <img
-          src="../public/favicon-logo.svg"
+          src="/favicon-logo.svg"
           alt=""
           width={size}
           height={size}
