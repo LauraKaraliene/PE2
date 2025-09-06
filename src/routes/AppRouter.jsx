@@ -31,20 +31,3 @@ export default function AppRouter() {
     </Routes>
   );
 }
-
-// export default function AppRouter() {
-//   return (
-//     <Routes>
-//       {/* Main routes with MainLayout */}
-//       <Route element={<MainLayout />}>
-//         <Route path="/" element={<Home />} />
-//         <Route path="/venues/:id" element={<SingleVenue />} />
-//         <Route path="/profile/:username" element={<ProfilePage />} />
-//       </Route>
-
-//       {/* Auth routes (no MainLayout) */}
-//       <Route path="/register" element={<Register />} />
-//       <Route path="/login" element={<Login />} />
-//     </Routes>
-//   );
-// }
