@@ -111,7 +111,7 @@ export default function SingleVenue() {
   const showManagePanel = !isOwner && !!bookingIdFromState;
 
   return (
-    <div className="max-w-[800px] mx-auto mb-8 px-4 pt-0 pb-8">
+    <div className="max-w-[800px] mx-auto mb-8 pt-0 pb-8">
       {/* Back */}
       <button
         onClick={() => {
