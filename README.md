@@ -1,4 +1,4 @@
-# Holidaze – Accommodation Booking Platform by Laura Karaliene (School Project)
+# Holidaze – Accommodation Booking Platform
 
 ![Holidaze Screenshot](./src/assets/screenshot.png)
 
@@ -26,7 +26,7 @@ To build a fully functional front-end accommodation booking platform with both c
 
 - **Host Features**: Hosts can create, edit, and delete venues, and view bookings on their venues.
 
-- **Responsive Desig**: Optimized for both desktop and mobile devices.
+- **Responsive Design**: Optimized for both desktop and mobile devices.
 
 ### API Integration
 
@@ -48,7 +48,7 @@ The project uses the **Noroff API** v2, specifically the **/holidaze** endpoints
 
 -[JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
--[Tailwind CSS]()
+-[Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite)
 
 -[React Router](https://reactrouter.com/)
 
@@ -106,7 +106,7 @@ The project uses the **Noroff API** v2, specifically the **/holidaze** endpoints
 
 ### Deployed Version
 
-- **[Holidaze Live]()**
+- **[Holidaze Live](https://bookmyholidayhome.netlify.app/)**
   – Try the live version here.
 
 ### Resources
