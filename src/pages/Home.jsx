@@ -86,8 +86,8 @@ export default function Home() {
   }
 
   return (
-    <div className="px-4 flex justify-center flex-col">
-      <div className="max-w-[1200px] mx-auto">
+    <div className="flex justify-center flex-col">
+      <div className="max-w-[1200px] mx-auto w-full">
         {!isSearching && (
           <Pagination
             currentPage={currentPage}

@@ -7,7 +7,7 @@ import Toaster from "../components/ui/Toaster";
 export default function MainLayout() {
   return (
     <>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col overflow-x-hidden">
         <Header />
         <Toaster />
 
@@ -15,7 +15,7 @@ export default function MainLayout() {
         <div className="block sm:hidden px-4">
           <SearchBar className="mt-4" />
         </div>
-        <main className="flex-grow pt-20 px-4">
+        <main className="flex-grow pt-10 px-4">
           <Outlet />
         </main>
         <Footer />

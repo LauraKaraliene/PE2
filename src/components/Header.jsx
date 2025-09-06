@@ -29,6 +29,8 @@ export default function Header() {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
+  const toggleMenu = () => setMenuOpen((v) => !v);
+
   const profileBase = username ? `/profile/${username}` : "/login";
   const tabLink = (slug) =>
     username ? `${profileBase}?tab=${slug}` : "/login";
@@ -54,113 +56,126 @@ export default function Header() {
 
       {/* Hamburger / Close */}
       <button
-        onClick={() => setMenuOpen((v) => !v)}
+        type="button"
+        onClick={toggleMenu}
         className="p-2 z-50 flex-shrink-0"
         aria-label="Toggle menu"
         aria-expanded={menuOpen}
         aria-controls="site-menu"
       >
         {menuOpen ? (
-          <XMarkIcon className="w-6 h-6 text-gray-800 transition-transform duration-300 rotate-90" />
+          <XMarkIcon className="w-7 h-7 text-gray-800 transition-transform duration-300 rotate-90" />
         ) : (
-          <Bars3Icon className="w-6 h-6 text-gray-800 transition-transform duration-300" />
+          <Bars3Icon className="w-7 h-7 text-gray-800 transition-transform duration-300" />
         )}
       </button>
 
-      {/* Slide-in Sidebar */}
+      {/* Drawer root (contains both backdrop + panel) */}
       <div
-        id="site-menu"
-        role="dialog"
-        aria-modal="true"
-        className={`fixed top-0 right-0 h-full w-full sm:w-64 bg-[color:var(--color-background)] shadow-lg transform transition-transform duration-300 ease-in-out z-40 ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-0 z-40 ${
+          menuOpen ? "" : "pointer-events-none"
         }`}
       >
-        <nav className="flex flex-col h-full justify-between p-6">
-          <div className="space-y-4 mt-14 text-md">
-            <Link
-              to="/"
-              className="block hover:font-bold text-[color:var(--color-accent)]"
-              onClick={() => {
-                setQuery("");
-                closeMenu();
-              }}
-            >
-              Home
-            </Link>
-
-            {/* Profile root */}
-            <Link
-              to={profileBase}
-              className="block hover:font-bold text-[color:var(--color-accent)]"
-              onClick={closeMenu}
-            >
-              Profile
-            </Link>
-
-            {/* Sub-links */}
-            <div className="ml-3 space-y-2 text-sm">
-              <Link
-                to={tabLink("upcoming")}
-                onClick={closeMenu}
-                className="block hover:font-bold text-[color:var(--color-accent)]"
-              >
-                Upcoming bookings
-              </Link>
-              <Link
-                to={tabLink("previous")}
-                onClick={closeMenu}
-                className="block hover:font-bold text-[color:var(--color-accent)]"
-              >
-                Previous bookings
-              </Link>
-              <Link
-                to={tabLink("my-venues")}
-                onClick={closeMenu}
-                className="block hover:font-bold text-[color:var(--color-accent)]"
-              >
-                My venues
-              </Link>
-              <Link
-                to={tabLink("favorites")}
-                onClick={closeMenu}
-                className="block hover:font-bold text-[color:var(--color-accent)]"
-              >
-                Favorites
-              </Link>
-            </div>
-          </div>
-
-          {/* Auth Section */}
-          <div className="space-y-2 text-sm">
-            {user ? (
-              <button
-                onClick={handleLogout}
-                className="btn-logout font-medium text-left w-full text-[color:var(--color-neutral)] hover:text-red-600"
-              >
-                Logout
-              </button>
-            ) : (
-              <Link
-                to="/login"
-                className="block hover:text-[color:var(--color-accent)]"
-                onClick={closeMenu}
-              >
-                Login or Register
-              </Link>
-            )}
-          </div>
-        </nav>
-      </div>
-
-      {/* Overlay to close menu on background click */}
-      {menuOpen && (
-        <button
-          aria-label="Close menu"
-          className="fixed inset-0 z-30 cursor-default"
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/40 transition-opacity ${
+            menuOpen ? "opacity-100" : "opacity-0"
+          }`}
           onClick={closeMenu}
+          aria-hidden="true"
         />
-      )}
+
+        {/* Slide container prevents page overflow */}
+        <div className="absolute inset-y-0 right-0 overflow-hidden">
+          {/* Panel */}
+          <nav
+            id="site-menu"
+            role="dialog"
+            aria-modal="true"
+            className={`relative h-full w-[85vw] max-w-[320px] sm:w-64
+                        bg-[color:var(--color-background)] shadow-lg
+                        transform transition-transform duration-300 ease-in-out
+                        ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+          >
+            <div className="flex flex-col h-full justify-between p-6">
+              <div className="space-y-4 mt-14 text-lg">
+                <Link
+                  to="/"
+                  className="block hover:font-bold text-[color:var(--color-accent)]"
+                  onClick={() => {
+                    setQuery("");
+                    closeMenu();
+                  }}
+                >
+                  Home
+                </Link>
+
+                {/* Profile root */}
+                <Link
+                  to={profileBase}
+                  className="block hover:font-bold text-[color:var(--color-accent)]"
+                  onClick={closeMenu}
+                >
+                  Profile
+                </Link>
+
+                {/* Sub-links */}
+                <div className="ml-3 space-y-2 text-base">
+                  <Link
+                    to={tabLink("upcoming")}
+                    onClick={closeMenu}
+                    className="block hover:font-bold text-[color:var(--color-accent)]"
+                  >
+                    - Upcoming bookings
+                  </Link>
+                  <Link
+                    to={tabLink("previous")}
+                    onClick={closeMenu}
+                    className="block hover:font-bold text-[color:var(--color-accent)]"
+                  >
+                    - Previous bookings
+                  </Link>
+                  <Link
+                    to={tabLink("my-venues")}
+                    onClick={closeMenu}
+                    className="block hover:font-bold text-[color:var(--color-accent)]"
+                  >
+                    - My venues
+                  </Link>
+                  <Link
+                    to={tabLink("favorites")}
+                    onClick={closeMenu}
+                    className="block hover:font-bold text-[color:var(--color-accent)]"
+                  >
+                    - Favorites
+                  </Link>
+                </div>
+              </div>
+
+              {/* Auth Section */}
+              <div className="space-y-2 text-sm">
+                {user ? (
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="btn-logout font-medium text-left w-full text-[color:var(--color-neutral)] hover:text-red-600"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    className="block hover:text-[color:var(--color-accent)]"
+                    onClick={closeMenu}
+                  >
+                    Login or Register
+                  </Link>
+                )}
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
     </header>
   );
 }

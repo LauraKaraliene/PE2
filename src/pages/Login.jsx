@@ -7,7 +7,7 @@ export default function Login() {
 
   return (
     <AuthLayout>
-      <div className="w-full px-4 absolute top-6 left-0 ">
+      <div className="w-full absolute top-6 left-0 ">
         {/* Back Button */}
         <a
           onClick={() => navigate(-1)}

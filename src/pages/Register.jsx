@@ -8,7 +8,7 @@ export default function Register() {
   return (
     <AuthLayout>
       {/* Back Button */}
-      <div className="w-full px-4 absolute top-6 left-0">
+      <div className="w-full absolute top-6 left-0">
         <a
           onClick={() => navigate(-1)}
           className="text-sm font-medium hover:underline underline-offset-2 block cursor-pointer"
