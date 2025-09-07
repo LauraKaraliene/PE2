@@ -118,11 +118,7 @@ export default function EditProfileForm({ profile, onClose, onUpdated }) {
         return;
       }
 
-      await apiRequest(
-        `${API_PROFILES}/${user.name.toLowerCase()}`,
-        "PUT",
-        payload
-      );
+      await apiRequest(`${API_PROFILES}/${user.name}`, "PUT", payload);
 
       notify.push({ type: "success", message: "Profile updated!" });
       onUpdated?.();

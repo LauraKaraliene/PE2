@@ -16,7 +16,7 @@ export default function Login() {
 
   return (
     <AuthLayout>
-      <div className="w-full absolute top-6 left-0 ">
+      <div className="w-full absolute top-6 left-6 cursor-pointer">
         {/* Back Button */}
         <a
           onClick={() => navigate(-1)}

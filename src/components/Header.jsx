@@ -15,6 +15,13 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useSearch } from "../context/SearchContext";
 
+// clear only volatile/session data (keeps per-user favorites)
+function clearAppStorage() {
+  localStorage.removeItem("cart-storage"); // adjust if you persist more slices
+  localStorage.removeItem("user");
+  localStorage.removeItem("accessToken");
+}
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { setQuery } = useSearch();
@@ -23,19 +30,16 @@ export default function Header() {
   const username = user?.name?.toLowerCase();
 
   function handleLogout() {
-    localStorage.removeItem("user");
-    localStorage.removeItem("accessToken");
+    clearAppStorage();
     setMenuOpen(false);
-    window.location.href = "/";
+    window.location.href = "/"; // or use a router navigate
   }
 
-  // Prevent body scroll when the menu is open
+  // lock body scroll when the menu is open
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = menuOpen ? "hidden" : prev || "";
-    return () => {
-      document.body.style.overflow = prev || "";
-    };
+    return () => (document.body.style.overflow = prev || "");
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
@@ -59,7 +63,7 @@ export default function Header() {
         />
       </Link>
 
-      {/* Search (desktop) */}
+      {/* Search (desktop only) */}
       <div className="hidden sm:flex flex-grow justify-center">
         <SearchBar className="mt-0 mx-auto" />
       </div>
@@ -80,7 +84,7 @@ export default function Header() {
         )}
       </button>
 
-      {/* Drawer root (contains both backdrop + panel) */}
+      {/* Drawer root (backdrop + panel) */}
       <div
         className={`fixed inset-0 z-40 ${
           menuOpen ? "" : "pointer-events-none"

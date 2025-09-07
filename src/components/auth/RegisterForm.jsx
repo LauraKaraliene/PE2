@@ -77,7 +77,7 @@ export default function RegisterForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 bg-[color:var(--color-background)] rounded-md shadow-md p-8 mt-7"
+      className="space-y-4 bg-[color:var(--color-background)] border border-gray-200 rounded-md shadow-md p-8 mt-7"
     >
       <input
         type="text"
