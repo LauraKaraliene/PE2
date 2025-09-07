@@ -1,11 +1,9 @@
 /**
- * Context for managing search functionality.
+ * Search context and provider.
  *
- * - Handles search queries and fetches results from the API.
- * - Debounces API calls to optimize performance.
- * - Automatically navigates to the home page when a search query is made from another route.
- *
- * @module SearchContext
+ * - Manages the global search state, including the query, results, and loading status.
+ * - Provides functionality to perform a search and clear results when navigating away from the home page.
+ * - Includes a `useSearch` hook for accessing the search state and actions.
  */
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -14,13 +12,15 @@ import { useNavigate, useLocation } from "react-router-dom";
 const SearchContext = createContext();
 
 /**
- * Provider component for the Search context.
+ * SearchProvider component.
  *
- * - Wraps the application and provides access to search-related functions and data.
+ * - Wraps the application or specific parts of it to provide search functionality.
+ * - Manages the search query, results, and loading state.
+ * - Automatically clears the search when navigating away from the home page.
  *
  * @param {object} props - Component props.
- * @param {React.ReactNode} props.children - Child components to render within the provider.
- * @returns {JSX.Element} The Search context provider.
+ * @param {React.ReactNode} props.children - The child components that will have access to the search context.
+ * @returns {JSX.Element} The search context provider.
  */
 export const SearchProvider = ({ children }) => {
   const [query, setQuery] = useState("");
@@ -30,6 +30,15 @@ export const SearchProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Clear search when navigating away from home page
+  useEffect(() => {
+    if (location.pathname !== "/" && query.trim()) {
+      setQuery("");
+      setResults([]);
+    }
+  }, [location.pathname]);
+
+  // Search functionality
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
       if (!query.trim()) {
@@ -55,7 +64,7 @@ export const SearchProvider = ({ children }) => {
     }, 400);
 
     return () => clearTimeout(delayDebounce);
-  }, [query]);
+  }, [query, navigate, location.pathname]);
 
   return (
     <SearchContext.Provider value={{ query, setQuery, results, loading }}>
@@ -65,8 +74,14 @@ export const SearchProvider = ({ children }) => {
 };
 
 /**
- * Hook to access the Search context.
+ * Custom hook to access the search context.
  *
- * @returns {object} The Search context value.
+ * - Provides access to the search query, results, loading state, and actions.
+ *
+ * @returns {object} The search context value, including:
+ * - `query` (string): The current search query.
+ * - `setQuery` (function): Function to update the search query.
+ * - `results` (Array): The search results.
+ * - `loading` (boolean): Whether the search is currently loading.
  */
 export const useSearch = () => useContext(SearchContext);

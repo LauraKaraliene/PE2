@@ -128,7 +128,10 @@ export default function Header() {
                 <Link
                   to={profileBase}
                   className="block hover:font-bold text-[color:var(--color-accent)]"
-                  onClick={closeMenu}
+                  onClick={() => {
+                    setQuery("");
+                    closeMenu();
+                  }}
                 >
                   Profile
                 </Link>
