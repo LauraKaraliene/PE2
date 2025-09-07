@@ -49,7 +49,7 @@ export default function VenueAmenities({ meta }) {
         {meta?.breakfast && (
           <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
             <FaUtensils
-              size={14}
+              size={16}
               className="shrink-0 text-[color:var(--color-neutral)]"
               aria-hidden
             />
@@ -63,7 +63,7 @@ export default function VenueAmenities({ meta }) {
         {meta?.pets && (
           <li className="inline-flex items-center gap-1 leading-none bg-[color:var(--color-background-gray)] py-1.5 px-3 rounded-xl">
             <FaPaw
-              size={14}
+              size={16}
               className="shrink-0 text-[color:var(--color-neutral)]"
               aria-hidden
             />
